@@ -31,7 +31,7 @@ public class Lesson2 {
 
 
         }
-        System.out.println(result + "Hello, world");
+        System.out.println(result + "Hello, world" + "Hello, world");
 
 
     }
