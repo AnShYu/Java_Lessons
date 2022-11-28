@@ -10,14 +10,12 @@ public class Coach {
     private int lastMonthIncome;
     private int lastMonthNumberOfStudents;
 
-    public Coach (String name, String surname, int age, String specialisation, int salary, int lastMonthIncome, int lastMonthNumberOfStudents) {
+    public Coach (String name, String surname, int age, String specialisation, int salary) {
         this.name = name;
         this.surname = surname;
         this.age = age;
         this.specialisation = specialisation;
         this.salary = salary;
-        this.lastMonthIncome = lastMonthIncome;
-        this.lastMonthNumberOfStudents = lastMonthNumberOfStudents;
     }
 
     // Change status "employed" to "not employed"
@@ -25,12 +23,19 @@ public class Coach {
         active = false;
     }
 
+    public void setLastMonthIncome(int lastMonthIncome) {
+        this.lastMonthIncome = lastMonthIncome;
+    }
+
+    public void setLastMonthNumberOfStudents(int lastMonthNumberOfStudents) {
+        this.lastMonthNumberOfStudents = lastMonthNumberOfStudents;
+    }
+
     // Calculate how many students the coach needs next month that the gym breaks even with coach's salary
     public int calculateMinimalNewStudents () {
         int minimalNewStudents = salary / (lastMonthIncome / lastMonthNumberOfStudents);
         return minimalNewStudents;
     }
-
 
 
 

@@ -3,24 +3,20 @@ package ru.andrey.running;
 import java.util.ArrayList;
 
 public class RunningHistory {
-    private ArrayList<Kilometer> listOfRunningDays;
-
-    public RunningHistory (ArrayList listOfRunningDays) { // нужен ли здесь вообще конструктор? Конструктор массива такой же как для обычной переменной?
-        this.listOfRunningDays = listOfRunningDays;
-    }
+    private ArrayList<Kilometer> listOfRunningDays = new ArrayList<Kilometer>();
 
     // Method for adding distance
     // User must add distance every day, even if it is 0. If user skips any day, the respective day will not be in the array at all and further methods will give wrong results
-    public float addRunningDistanceOfTheDay (float completedDistance) {
+    public Kilometer addRunningDistanceOfTheDay (float completedDistance) {
         Kilometer newDistance = new Kilometer (completedDistance);
         listOfRunningDays.add(newDistance);
+        return newDistance;
     }
 
     // Method to receive distance of the given day
     // Keep in mind, that numeration of the days starts with 0 as in array.
     public Kilometer receiveDistanceOfGivenDay (int dayNumber) {
-        Kilometer distanceOftheDay = listOfRunningDays.get(dayNumber);
-        return distanceOftheDay;
+        return listOfRunningDays.get(dayNumber);
     }
 
     // Method to calculate average distance between two given days
@@ -30,7 +26,7 @@ public class RunningHistory {
             float distanceOfDay = listOfRunningDays.get(i).convertToFloat();
             totalDistance = totalDistance + distanceOfDay;
         }
-        int numberOfDays = finishDay - startDay + 2;
+        int numberOfDays = finishDay - startDay + 1;
         float averageDistance = totalDistance / numberOfDays;
         Kilometer distance = new Kilometer(averageDistance);
         return distance;
@@ -58,7 +54,7 @@ public class RunningHistory {
         for (int i = 0; i <= listOfRunningDays.size(); i++){
             float distanceOfDay = listOfRunningDays.get(i).convertToFloat();
             if (distanceOfDay > maximumDistance) {
-            maximumDistance = distanceOfDay
+            maximumDistance = distanceOfDay;
             }
         }
         Kilometer distance = new Kilometer(maximumDistance);
@@ -84,14 +80,14 @@ public class RunningHistory {
     }
 
     // Method to get number of days when the user did not run
-    public int receiveNumberOfNoRuningDays () {
-        int numberOfNoRuningDays = 0;
+    public int receiveNumberOfNoRunningDays () {
+        int numberOfNoRunningDays = 0;
         for (int i = 0; i <= listOfRunningDays.size(); i++) {
             if (listOfRunningDays.get(i).convertToFloat() == 0) {
-                numberOfNoRuningDays ++;
+                numberOfNoRunningDays ++;
             }
         }
-        return numberOfNoRuningDays;
+        return numberOfNoRunningDays;
     }
 
 }
