@@ -34,17 +34,7 @@ public class RunningHistory {
 
     // Method to calculate average distance for the whole period
     public Kilometer calculateAverageDistance () {
-        float totalDistance = 0;
-        for (int i = 0; i <= listOfRunningDays.size(); i++){
-            float distanceOfDay = listOfRunningDays.get(i).convertToFloat();
-            totalDistance = totalDistance + distanceOfDay;
-        }
-        int numberOfDays = 0;
-        for (int i = 0; i <= listOfRunningDays.size(); i++){
-            numberOfDays++;
-        }
-        float averageDistance = totalDistance / numberOfDays;
-        Kilometer distance = new Kilometer(averageDistance);
+        Kilometer distance = calculateAverageDistance(0, listOfRunningDays.size() - 1); // здесь не указано, к какому объекту применяется метод, это ок?
         return distance;
     }
 
@@ -63,14 +53,7 @@ public class RunningHistory {
 
     // Method to get the maximum distance for the whole period
     public Kilometer receiveMaximumDistance () {
-        float maximumDistance = 0;
-        for (int i = 0; i <= listOfRunningDays.size(); i++){
-            float distanceOfDay = listOfRunningDays.get(i).convertToFloat();
-            if (distanceOfDay > maximumDistance) {
-                maximumDistance = distanceOfDay;
-            }
-        }
-        Kilometer distance = new Kilometer(maximumDistance);
+        Kilometer distance = receiveMaximumDistance(0, listOfRunningDays.size() - 1);
         return distance;
     }
 
