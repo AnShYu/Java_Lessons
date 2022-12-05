@@ -16,6 +16,7 @@ public class UnlimitedArray {
                 longerArray[i] = myArray[i];
             }
             myArray = longerArray; // можно ли так делать?
+            arraySize = arraySize + 10;
         }
         myArray[counter] = integerToAdd;
         counter++;
