@@ -16,7 +16,7 @@ public class UnlimitedArray {
                 longerArray[i] = myArray[i];
             }
             myArray = longerArray; // можно ли так делать?
-            arraySize = arraySize + 10;
+            arraySize = arraySize + 10; // сначала пробовал указать это выше в коде, но получалась ошибка (выход за пределы массива)
         }
         myArray[counter] = integerToAdd;
         counter++;
