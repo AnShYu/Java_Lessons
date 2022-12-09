@@ -32,4 +32,16 @@ public class Student {
         numberOfVisits++;
     }
 
+    public String returnName () {
+        return name;
+    }
+
+    public String returnSurname () {
+        return surname;
+    }
+
+    @Override
+    public String toString() {
+        return "Имя и фамилия ученика: " + name + " " + surname + "; Возраст ученика: " + age;
+    }
 }

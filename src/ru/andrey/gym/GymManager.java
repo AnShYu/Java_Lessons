@@ -170,7 +170,7 @@ public class GymManager {
         String coachSurname = scanner.next();
 
         for (Coach coach: coaches) {
-            if (coach.returnName().equals(coachName) && coach.returnSurname().equals(coachSurname) {
+            if (coach.returnName().equals(coachName) && coach.returnSurname().equals(coachSurname)) {
                 System.out.println(coach);
             }
         }
@@ -200,7 +200,7 @@ public class GymManager {
         String coachSurname = scanner.next();
 
         for (Coach coach: coaches) {
-            if (coach.returnName().equals(coachName) && coach.returnSurname().equals(coachSurname)) { // ОШИБКА
+            if (coach.returnName().equals(coachName) && coach.returnSurname().equals(coachSurname)) {
                 coaches.remove(coach);
             }
         }
@@ -241,9 +241,9 @@ public class GymManager {
                 System.out.println("Тренер не найден");
             }
         System.out.println("Введите дату начала тренировок:");
-        Date groupStartingDate = scanner.nextDate; // ОШИБКА. Тип Date
+        //Date groupStartingDate = scanner.nextDate; // ОШИБКА. Тип Date
 
-        Group group = new Group (groupName, groupCoach, groupStartingDate);
+        Group group = new Group (groupName, groupCoach);
         groups.add(group);
     }
 
@@ -356,6 +356,52 @@ public class GymManager {
         for (Group group : groups) {
             if (group.returnGroupName().equals(groupName)) {
                 group.deleteTrainingDay(trainingDayToDelete);
+            }
+        }
+    }
+
+    private void displayStudentsList() {
+        System.out.println("Список учеников клуба " + clubName);
+        for (Student student: students) {
+            System.out.println("Ученик:");
+            System.out.println(student);
+        }
+    }
+    private void displayStudentInfo() {
+        System.out.println("Введите имя ученика");
+        String studentName = scanner.next();
+        System.out.println("Введите фамилию ученика");
+        String studentSurname = scanner.next();
+
+        for (Student student: students) {
+            if (student.returnName().equals(studentName) && student.returnSurname().equals(studentSurname)) {
+                System.out.println(student);
+            }
+        }
+    }
+
+    private void processAddStudent() {
+        System.out.println("Создаем нового ученика...");
+        System.out.println("Введите фамилию ученика:");
+        String surname = scanner.next();
+        System.out.println("Введите имя ученика:");
+        String name = scanner.next();
+        System.out.println("Введите возраст ученика:");
+        int age = scanner.nextInt();
+
+        Student student = new Student (name, surname, age);
+        students.add(student);
+    }
+
+    private void processRemoveStudent() {
+        System.out.println("Введите имя удаляемого ученика:");
+        String studentName = scanner.next();
+        System.out.println("Введите фамилию удаляемого ученика:");
+        String studentSurname = scanner.next();
+
+        for (Student student: students) {
+            if (student.returnName().equals(studentName) && student.returnSurname().equals(studentSurname)) {
+                students.remove(student); // как я понимаю, он удалится из массива. А сам объект останется, пока его не удалит габэдж коллектор. Предлагает заменить на Collection.removelf
             }
         }
     }

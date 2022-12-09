@@ -9,7 +9,7 @@ public class  Group {
     private List<TrainingDay> groupSchedule = new ArrayList<>();
     private Coach coach;
     private ArrayList<Student> listOfStudents;
-    private final Date startDate;
+    // private final Date startDate;
     private int totalIncomeFromGroup;
     private int incomeFromGroupInThisMonth;
     private ExaminationDay dayOfExam;
@@ -18,10 +18,10 @@ public class  Group {
     private int initialNumberOfStudents;
 
 
-    public Group(String groupName, Coach coach, Date startDate) {
+    public Group(String groupName, Coach coach) {
         this.groupName = groupName;
         this.coach = coach;
-        this.startDate = startDate;
+        // this.startDate = startDate;
     }
 
     public void setGroupName (String newGroupName) {
@@ -82,9 +82,11 @@ public class  Group {
     }
 
     public String showGroupSchedule() {
+        String returnData = "none";
         for (TrainingDay trainingDay: groupSchedule) {
-            return trainingDay.toString();
+            returnData = trainingDay.toString();
         }
+        return returnData;
     }
 
     @Override
