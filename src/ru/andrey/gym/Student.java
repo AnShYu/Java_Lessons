@@ -16,6 +16,17 @@ public class Student {
         this.age = age;
     }
 
+    public Student() {
+    }
+
+    public String returnStudentName() {
+        return name;
+    }
+
+    public String returnStudentSurname() {
+        return surname;
+    }
+
     public void visit () {
         lastVisitDate = new Date();
         numberOfVisits++;

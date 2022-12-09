@@ -1,12 +1,19 @@
 package ru.andrey.gym;
 
+import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
 public class GymManager {
 
     String clubName;
-    List<Coach> coaches;
+    List<Coach> coaches = new ArrayList<Coach>();
+    List<Group> groups = new ArrayList<>();
+    List<Student> students = new ArrayList<>();
+
+    Scanner scanner = new Scanner(System.in); // есть ли разница, если поставить сканнер внутри main?
 
     public GymManager(String clubName) {
         this.clubName = clubName;
@@ -14,7 +21,9 @@ public class GymManager {
 
     public static void main(String[] args) {
         GymManager gymManager = new GymManager("Рассвет");
-        gymManager.showMainMenu();
+        while(true) {
+            gymManager.showMainMenu();
+        }
     }
 
     private void showMainMenu() {
@@ -23,7 +32,6 @@ public class GymManager {
         System.out.println("2. Группы");
         System.out.println("3. Студенты");
 
-        Scanner scanner = new Scanner(System.in);
         int direction = scanner.nextInt();
         processDirection(direction);
     }
@@ -33,18 +41,52 @@ public class GymManager {
             case 1:
                 processCoaches();
                 break;
+            case 2:
+                processGroups();
+                break;
+            case 3:
+                processStudents();
+                break;
         }
     }
 
     private void processCoaches() {
         System.out.println("Выберите действие:");
-        System.out.println("1. Просмотреть список тренеров");
-        System.out.println("2. Просмотреть информацию о тренере");
-        System.out.println("3. Добавить нового тренера");
-        System.out.println("4. Уволить тренера");
+        System.out.println("1.1 Просмотреть список тренеров");
+        System.out.println("1.2. Просмотреть информацию о тренере");
+        System.out.println("1.3. Добавить нового тренера");
+        System.out.println("1.4. Уволить тренера");
 
-        Scanner scanner = new Scanner(System.in);
         int coachAction = scanner.nextInt();
+        processCoachAction(coachAction);
+    }
+
+    private void processGroups(){
+        System.out.println("Выберите действие:");
+        System.out.println("2.1. Посмотреть список групп");
+        System.out.println("2.2. Посмотреть информацию о группе");
+        System.out.println("2.3. Создать новую группу");
+        System.out.println("2.4. Удалить группу");
+        System.out.println("2.5. Добавить ученика в группу");
+        System.out.println("2.6. Удалить ученика из группы");
+        System.out.println("2.7. Показать расписание группы");
+        System.out.println("2.8. Добавить тренировочный день");
+        System.out.println("2.9. Удалить тренировочный день");
+
+        int groupAction = scanner.nextInt();
+        processGroupAction(groupAction);
+    }
+
+    private void processStudents() {
+        System.out.println("Выберите действие:");
+        System.out.println("3.1. Просмотреть список учеников");
+        System.out.println("3.2. Просмотреть информацию об ученике");
+        System.out.println("3.3. Добавить нового ученика");
+        System.out.println("3.4. Удалить ученика");
+
+        int studentAction = scanner.nextInt();
+        processStudentAction(studentAction);
+
     }
 
     private void processCoachAction(int coachAction) {
@@ -52,8 +94,63 @@ public class GymManager {
             case 1:
                 displayCoachesList();
                 break;
+            case 2:
+                displayCoachInfo();
+                break;
             case 3:
                 processAddCoach();
+                break;
+            case 4:
+                processRemoveCoach();
+                break;
+        }
+    }
+
+    private void processGroupAction(int coachAction) {
+        switch (coachAction) {
+            case 1:
+                displayGroupsList();
+                break;
+            case 2:
+                displayGroupInfo();
+                break;
+            case 3:
+                processAddGroup();
+                break;
+            case 4:
+                processRemoveGroup();
+                break;
+            case 5:
+                processAddStudentToTheGroup();
+                break;
+            case 6:
+                processRemoveStudentFromTheGroup();
+                break;
+            case 7:
+                processShowSchedule();
+                break;
+            case 8:
+                processAddTrainingDay();
+                break;
+            case 9:
+                processRemoveTrainingDay();
+                break;
+        }
+    }
+
+    private void processStudentAction(int coachAction) {
+        switch (coachAction) {
+            case 1:
+                displayStudentsList();
+                break;
+            case 2:
+                displayStudentInfo();
+                break;
+            case 3:
+                processAddStudent();
+                break;
+            case 4:
+                processRemoveStudent();
                 break;
         }
     }
@@ -66,18 +163,201 @@ public class GymManager {
         }
     }
 
-    private void processAddCoach() {
-        Scanner scanner = new Scanner(System.in);
+    private void displayCoachInfo() {
+        System.out.println("Введите имя тренера");
+        String coachName = scanner.next();
+        System.out.println("Введите фамилию тренера");
+        String coachSurname = scanner.next();
 
+        for (Coach coach: coaches) {
+            if (coach.returnName().equals(coachName) && coach.returnSurname().equals(coachSurname) {
+                System.out.println(coach);
+            }
+        }
+    }
+
+    private void processAddCoach() {
         System.out.println("Создаем нового тренера...");
         System.out.println("Введите фамилию тренера:");
         String surname = scanner.next();
         System.out.println("Введите имя тренера:");
         String name = scanner.next();
+        System.out.println("Введите возраст тренера:");
+        int age = scanner.nextInt();
+        System.out.println("Введите специализацию тренера:");
+        String speciality = scanner.next();
+        System.out.println("Введите зарплату тренера:");
+        int salary = scanner.nextInt();
 
-        Coach coach = new Coach(name, surname, 37, "гимнастика", 1200);
+        Coach coach = new Coach(name, surname, age, speciality, salary);
         coaches.add(coach);
     }
 
+    private void processRemoveCoach() {
+        System.out.println("Введите имя удаляемого тренера:");
+        String coachName = scanner.next();
+        System.out.println("Введите фамилию удаляемого тренера:");
+        String coachSurname = scanner.next();
+
+        for (Coach coach: coaches) {
+            if (coach.returnName().equals(coachName) && coach.returnSurname().equals(coachSurname)) { // ОШИБКА
+                coaches.remove(coach);
+            }
+        }
+    }
+
+    private void displayGroupsList(){
+        System.out.println("Список групп клуба " + clubName);
+        for (Group group: groups) {
+            System.out.println("Группа: ");
+            System.out.println(group);
+        }
+    }
+
+    private void displayGroupInfo(){
+        System.out.println("Введите название группы:");
+        String groupName = scanner.next();
+        for (Group group: groups) {
+            if (group.returnGroupName().equals(groupName)) {
+                System.out.println(group); // покажет ли это расписание?
+            }
+        }
+    }
+
+    private void processAddGroup() {
+        System.out.println("Введите название группы (в формате: Группа Мальчики 7-10 лет):");
+        String groupName = scanner.next();
+
+        System.out.println("Введите имя тренера группы: ");
+        String groupCoachName = scanner.next();
+        System.out.println("Введите фамилию тренера группы:");
+        String groupCoachSurname = scanner.next();
+        Coach groupCoach = new Coach(); // Можно ли так? Я сделал в Coach два конструктора - один без аргументов
+        for (Coach coach: coaches)
+            if (coach.returnName().equals(groupCoachName) && coach.returnSurname().equals(groupCoachSurname)) {
+                groupCoach = coach;
+            }
+        else {
+                System.out.println("Тренер не найден");
+            }
+        System.out.println("Введите дату начала тренировок:");
+        Date groupStartingDate = scanner.nextDate; // ОШИБКА. Тип Date
+
+        Group group = new Group (groupName, groupCoach, groupStartingDate);
+        groups.add(group);
+    }
+
+    private void processRemoveGroup() {
+        System.out.println("Введите название группы:");
+        String groupName = scanner.next();
+        for (Group group: groups) {
+            if (group.returnGroupName().equals(groupName)) {
+                groups.remove(group);
+            }
+        }
+    }
+
+    private void processAddStudentToTheGroup() {
+        System.out.println("Введите название группы:");
+        String groupName = scanner.next();
+
+        System.out.println("Введите имя ученика:");
+        String name = scanner.next();
+
+        System.out.println("Введите фамилию ученика:");
+        String surname = scanner.next();
+
+        Student newStudent = new Student();
+
+        for (Student student: students) {
+            if (student.returnStudentName().equals(name) && student.returnStudentSurname().equals(surname)) {
+                newStudent = student;
+            }
+        }
+
+        for (Group group: groups) {
+            if (group.returnGroupName().equals(groupName)) {
+                group.addNewStudent(newStudent);
+            }
+        }
+    }
+
+    private void processRemoveStudentFromTheGroup() {
+        System.out.println("Введите название группы:");
+        String groupName = scanner.next();
+
+        System.out.println("Введите имя ученика:");
+        String name = scanner.next();
+
+        System.out.println("Введите фамилию ученика:");
+        String surname = scanner.next();
+
+        Student studentToRemove = new Student();
+
+        for (Student student: students) {
+            if (student.returnStudentName().equals(name) && student.returnStudentSurname().equals(surname)) {
+                studentToRemove = student;
+            }
+        }
+
+        for (Group group: groups) {
+            if (group.returnGroupName().equals(groupName)) {
+                group.excludeStudent(studentToRemove);
+            }
+        }
+    }
+
+    private void processShowSchedule() {
+        System.out.println("Введите название группы:");
+        String groupName = scanner.next();
+
+        for (Group group: groups) {
+            if (group.returnGroupName().equals(groupName)) {
+                group.showGroupSchedule();
+            }
+        }
+    }
+
+    private void processAddTrainingDay() {
+        System.out.println("Введите название группы:");
+        String groupName = scanner.next();
+
+        System.out.println("Введите день тренировки (в формате: 1 или 2 или 3 - до 7; где 1 - Пн.");
+        int trainingDayOfWeek = scanner.nextInt();
+
+        System.out.println("Введите час начала тренировки");
+        int trainingHour = scanner.nextInt();
+
+        System.out.println("Введите минуты начала тренировки");
+        int trainingMinutes = scanner.nextInt();
+
+        for (Group group : groups) {
+            if (group.returnGroupName().equals(groupName)) {
+                group.addTrainingDay(trainingDayOfWeek, trainingHour, trainingMinutes);
+            }
+        }
+    }
+
+    private void processRemoveTrainingDay() {
+        System.out.println("Введите название группы:");
+        String groupName = scanner.next();
+
+        System.out.println("Введите день тренировки (в формате: 1 или 2 или 3 - до 7; где 1 - Пн.");
+        int trainingDayOfWeek = scanner.nextInt();
+
+        System.out.println("Введите час начала тренировки");
+        int trainingHour = scanner.nextInt();
+
+        System.out.println("Введите минуты начала тренировки");
+        int trainingMinutes = scanner.nextInt();
+
+        TrainingDay trainingDayToDelete = new TrainingDay(trainingDayOfWeek, trainingHour, trainingMinutes);
+
+        for (Group group : groups) {
+            if (group.returnGroupName().equals(groupName)) {
+                group.deleteTrainingDay(trainingDayToDelete);
+            }
+        }
+    }
 
 }

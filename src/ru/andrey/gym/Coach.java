@@ -18,6 +18,9 @@ public class Coach {
         this.salary = salary;
     }
 
+    public Coach() {
+    }
+
     // Change status "employed" to "not employed"
     public void terminateEmployment () {
         active = false;
@@ -37,6 +40,16 @@ public class Coach {
         return minimalNewStudents;
     }
 
+    public String returnName () {
+        return name;
+    }
 
+    public String returnSurname () {
+        return surname;
+    }
 
+    @Override
+    public String toString() {
+        return "Имя, Фамилия: " + name + surname + "; Возраст: " + age + "; Специализация: " + specialisation + "; Зарплата: " + salary;
+    }
 }

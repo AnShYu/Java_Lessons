@@ -2,10 +2,11 @@ package ru.andrey.gym;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class  Group {
     private String groupName;
-    private ArrayList<TrainingDay> groupSchedule;
+    private List<TrainingDay> groupSchedule = new ArrayList<>();
     private Coach coach;
     private ArrayList<Student> listOfStudents;
     private final Date startDate;
@@ -17,14 +18,13 @@ public class  Group {
     private int initialNumberOfStudents;
 
 
-    public Group(String groupName, ArrayList<TrainingDay> weekDayAndTimeOfGroup, Coach coach, Date startDate) {
+    public Group(String groupName, Coach coach, Date startDate) {
         this.groupName = groupName;
-        this.groupSchedule = weekDayAndTimeOfGroup;
         this.coach = coach;
         this.startDate = startDate;
     }
 
-    public void setGroupNameGroupName (String newGroupName) {
+    public void setGroupName (String newGroupName) {
         groupName = newGroupName;
     }
 
@@ -77,5 +77,18 @@ public class  Group {
         incomeFromGroupInThisMonth = incomeFromGroupInThisMonth + receivedSum; // как обнулять при смене месяца?
     }
 
+    public String returnGroupName() {
+        return groupName;
+    }
 
+    public String showGroupSchedule() {
+        for (TrainingDay trainingDay: groupSchedule) {
+            return trainingDay.toString();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Название группы: " + groupName + "; Тренер группы: " + coach;
+    }
 }

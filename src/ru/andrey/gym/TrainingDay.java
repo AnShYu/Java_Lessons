@@ -16,5 +16,8 @@ public class TrainingDay {
         return weekDayNumber;
     }
 
-
+    @Override
+    public String toString() {
+        return "День: " + weekDayNumber + "; Время: " + dayTimeHour + ":" + dayTimeMinutes;
+    }
 }
