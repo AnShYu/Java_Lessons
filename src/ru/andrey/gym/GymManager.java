@@ -335,6 +335,9 @@ public class GymManager {
             if (group.returnGroupName().equals(groupName)) {
                 group.addTrainingDay(trainingDayOfWeek, trainingHour, trainingMinutes);
             }
+            else {
+                System.out.println("Группа не найдена");
+            }
         }
     }
 
