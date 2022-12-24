@@ -19,13 +19,24 @@ public class Stack<T> {
     }
 
     public T pop () {
-        T returnableValue = (T) stack[counter - 1];
-        stack[counter - 1] = null;
-        int index = counter - 1;
-        if (index != 0) {
-            counter--;
+        T returnableValue;
+        if (counter == 0) {
+            return null;
         }
-        return returnableValue;
+        else {
+            returnableValue = (T) stack[counter - 1];
+        };
+        if (returnableValue == null) {
+            return null;
+        }
+        else {
+            stack[counter - 1] = null;
+            int index = counter - 1;
+            if (index != 0) {
+                counter--;
+            }
+            return returnableValue;
+        }
     }
 
     public int getIndexOfTheLastElement() {
