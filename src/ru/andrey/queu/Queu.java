@@ -19,11 +19,20 @@ public class Queu<T> {
     }
 
     public T dequeu () {
-        T returnableValue = (T) queu[0];
+        T returnableValue;
+        if (counter == 0) {
+            return null;
+        }
+        else {
+            returnableValue = (T) queu[0];
+        }
         for (int i = 0; i <= counter; i++) {
             queu[i] = queu[i + 1];
         }
-        counter--;
+        int index = counter - 1;
+        if (index != 0) {
+            counter--;
+        }
         return returnableValue;
     }
 
