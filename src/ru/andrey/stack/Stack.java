@@ -34,9 +34,4 @@ public class Stack<T> {
         return returnableValue;
     }
 
-    public int getIndexOfTheLastElement() {
-        int index = counter - 1;
-        return index;
-    }
-
 }
