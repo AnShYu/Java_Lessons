@@ -26,17 +26,12 @@ public class Stack<T> {
         else {
             returnableValue = (T) stack[counter - 1];
         };
-        if (returnableValue == null) {
-            return null;
+        stack[counter - 1] = null;
+        int index = counter - 1;
+        if (index != 0) {
+            counter--;
         }
-        else {
-            stack[counter - 1] = null;
-            int index = counter - 1;
-            if (index != 0) {
-                counter--;
-            }
-            return returnableValue;
-        }
+        return returnableValue;
     }
 
     public int getIndexOfTheLastElement() {
