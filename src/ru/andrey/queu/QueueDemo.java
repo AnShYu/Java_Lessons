@@ -2,47 +2,47 @@ package ru.andrey.queu;
 
 import java.util.Scanner;
 
-public class QueuDemo {
+public class QueueDemo {
 
-    Queu<Task> queuOfTasks = new Queu();
+    Queue<Task> queueOfTasks = new Queue();
     Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        QueuDemo queuDemo = new QueuDemo();
+        QueueDemo queueDemo = new QueueDemo();
         while(true) {
-            queuDemo.showMainMenue();
+            queueDemo.showMainMenu();
         }
     }
 
-    private void showMainMenue() {
+    private void showMainMenu() {
         System.out.println("Для добавления задачи введите 1");
         System.out.println("Для получения следующей задачи введите 2");
 
         int direction = scanner.nextInt();
-        processDirection(direction);
+        processAction(direction); // переименовать в процессэкшн
     }
 
-    private void processDirection(int direction) {
+    private void processAction(int direction) {
         switch(direction) {
             case 1:
-                processEnque();
+                processEnqueue();
                 break;
             case 2:
-                Task nextTask = queuOfTasks.dequeu();
+                Task nextTask = queueOfTasks.dequeue();
                 if (nextTask == null) {
                     System.out.println("Больше задач нет. Отдохни");
                 }
-                if (nextTask != null) {
+                else {
                     System.out.println(nextTask);
                 }
                 break;
         }
     }
 
-    private void processEnque() {
+    private void processEnqueue() {
         System.out.println("Введите новую задачу");
         Task newTask =  new Task(scanner.next());
-        queuOfTasks.enqueu(newTask);
+        queueOfTasks.enqueue(newTask);
     }
 
 
