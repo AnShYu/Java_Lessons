@@ -1,37 +1,31 @@
 package ru.andrey.stack;
 
 public class Stack<T> {
-    private int stackHight = 10;
+    private int stackHeight = 10;
     private int counter = 0;
-    private Object[] stack = new Object[stackHight];
+    private Object[] stack = new Object[stackHeight];
 
-    public void push (Object o) {
-        if (counter >= stackHight) {
-            Object[] higherStack = new Object[stackHight + 10];
-            for (int i = 0; i < stackHight; i++) {
+    public void push (T o) {
+        if (counter >= stackHeight) {
+            Object[] higherStack = new Object[stackHeight + 10];
+            for (int i = 0; i < stackHeight; i++) {
                 higherStack[i] = stack[i];
             }
             stack = higherStack;
-            stackHight = stackHight + 10;
+            stackHeight = stackHeight + 10;
         }
-        stack[counter] = (T) o;
+        stack[counter] = o;
         counter++;
     }
 
     public T pop () {
-        T returnableValue;
         if (counter == 0) {
             return null;
-        }
-        else {
-            returnableValue = (T) stack[counter - 1];
-        };
-        stack[counter - 1] = null;
-        int index = counter - 1;
-        if (index != 0) {
+        } else {
+            T value = (T) stack[counter - 1];
             counter--;
+            return value;
         }
-        return returnableValue;
     }
 
 }

@@ -8,38 +8,38 @@ public class StackDemo {
     Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        StackDemo queuDemo = new StackDemo();
+        StackDemo stackDemo = new StackDemo();
         while(true) {
-            queuDemo.showMainMenue();
+            stackDemo.showMainMenu();
         }
     }
 
-    private void showMainMenue() {
+    private void showMainMenu() {
         System.out.println("Для добавления задачи введите 1");
         System.out.println("Для получения следующей задачи введите 2");
 
         int direction = scanner.nextInt();
-        processDirection(direction);
+        processAction(direction);
     }
 
-    private void processDirection(int direction) {
+    private void processAction(int direction) {
         switch(direction) {
             case 1:
-                processEnque();
+                processPush();
                 break;
             case 2:
                 Task nextTask = stackOfTasks.pop();
                 if (nextTask == null) {
                     System.out.println("Больше задач нет. Отдохни");
                 }
-                if (nextTask != null) {
+                else {
                     System.out.println(nextTask);
                 }
                 break;
         }
     }
 
-    private void processEnque() {
+    private void processPush() {
         System.out.println("Введите новую задачу");
         Task newTask =  new Task(scanner.next());
         stackOfTasks.push(newTask);
