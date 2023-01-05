@@ -232,19 +232,19 @@ public class GymManager {
         String groupCoachName = scanner.next();
         System.out.println("Введите фамилию тренера группы:");
         String groupCoachSurname = scanner.next();
-        Coach groupCoach = new Coach(); // Можно ли так? Я сделал в Coach два конструктора - один без аргументов
         for (Coach coach: coaches)
             if (coach.returnName().equals(groupCoachName) && coach.returnSurname().equals(groupCoachSurname)) {
-                groupCoach = coach;
+                Coach groupCoach = coach;
+                Group group = new Group (groupName, groupCoach);
+                groups.add(group);
             }
         else {
                 System.out.println("Тренер не найден");
             }
-        System.out.println("Введите дату начала тренировок:");
+        //System.out.println("Введите дату начала тренировок:");
         //Date groupStartingDate = scanner.nextDate; // ОШИБКА. Тип Date
 
-        Group group = new Group (groupName, groupCoach);
-        groups.add(group);
+
     }
 
     private void processRemoveGroup() {
