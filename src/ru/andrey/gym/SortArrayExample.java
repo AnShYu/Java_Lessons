@@ -2,7 +2,7 @@ package ru.andrey.gym;
 
 public class SortArrayExample {
 
-    public <T extends Comparable> void sortArray(T[] array) { // это правильно?
+    public <T extends Comparable> void sortArray(T[] array) { // это правильный синтаксис? ограничение для T указываю в возвращаемом типе..
         int counter;
         do {
             counter = 0;
