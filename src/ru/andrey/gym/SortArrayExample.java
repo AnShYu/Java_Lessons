@@ -18,7 +18,13 @@ public class SortArrayExample {
     }
 
     public static void main(String[] args) {
-        Integer[] testArray = {2, 1, 7, 9, 20, 0, 8};
+        Integer[] testArray = {-2, 1, 7, 9, 20, 0, 8};
+
+//        Student st1 = new Student("Ivan", "Ivanov", 19);
+//        Student st2 = new Student ("Ivan", "Petrov", 20);
+//        Student st3 = new Student ("Ivan", "Sidorov", 17);
+//        Student[] testArray = {st1, st2, st3};
+
         SortArrayExample sortArrayExample = new SortArrayExample();
         sortArrayExample.sortArray(testArray);
         for (int i = 0; i < testArray.length; i++) {
