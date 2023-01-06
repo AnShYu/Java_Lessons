@@ -1,4 +1,4 @@
-package ru.andrey.gym;
+package ru.andrey.running;
 
 import java.util.Scanner;
 
