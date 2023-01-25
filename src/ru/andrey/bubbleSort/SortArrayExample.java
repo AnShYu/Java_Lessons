@@ -2,7 +2,7 @@ package ru.andrey.bubbleSort;
 
 public class SortArrayExample {
 
-    public <T extends Comparable> void sortArray(T[] array) { // это правильный синтаксис? ограничение для T указываю в возвращаемом типе..
+    public <T extends Comparable> void sortArray(T[] array) {
         int counter;
         do {
             counter = 0;
@@ -24,6 +24,12 @@ public class SortArrayExample {
 //        Student st2 = new Student ("Ivan", "Petrov", 20);
 //        Student st3 = new Student ("Ivan", "Sidorov", 17);
 //        Student[] testArray = {st1, st2, st3};
+
+//        Name n1 = new Name("Andrey");
+//        Name n2 = new Name("Ivan");
+//        Name n3 = new Name("Anna");
+//        Name n4 = new Name ("Sergey");
+//        Name[] testArray = {n1, n2, n3, n4};
 
         SortArrayExample sortArrayExample = new SortArrayExample();
         sortArrayExample.sortArray(testArray);

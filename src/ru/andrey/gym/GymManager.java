@@ -9,11 +9,11 @@ import java.util.Scanner;
 public class GymManager {
 
     String clubName;
-    List<Coach> coaches = new ArrayList<Coach>();
+    List<Coach> coaches = new ArrayList<>();
     List<Group> groups = new ArrayList<>();
     List<Student> students = new ArrayList<>();
 
-    Scanner scanner = new Scanner(System.in); // есть ли разница, если поставить сканнер внутри main?
+    Scanner scanner = new Scanner(System.in);
 
     public GymManager(String clubName) {
         this.clubName = clubName;
@@ -52,10 +52,10 @@ public class GymManager {
 
     private void processCoaches() {
         System.out.println("Выберите действие:");
-        System.out.println("1.1 Просмотреть список тренеров");
-        System.out.println("1.2. Просмотреть информацию о тренере");
-        System.out.println("1.3. Добавить нового тренера");
-        System.out.println("1.4. Уволить тренера");
+        System.out.println("1. Просмотреть список тренеров");
+        System.out.println("2. Просмотреть информацию о тренере");
+        System.out.println("3. Добавить нового тренера");
+        System.out.println("4. Уволить тренера");
 
         int coachAction = scanner.nextInt();
         processCoachAction(coachAction);
@@ -63,15 +63,15 @@ public class GymManager {
 
     private void processGroups(){
         System.out.println("Выберите действие:");
-        System.out.println("2.1. Посмотреть список групп");
-        System.out.println("2.2. Посмотреть информацию о группе");
-        System.out.println("2.3. Создать новую группу");
-        System.out.println("2.4. Удалить группу");
-        System.out.println("2.5. Добавить ученика в группу");
-        System.out.println("2.6. Удалить ученика из группы");
-        System.out.println("2.7. Показать расписание группы");
-        System.out.println("2.8. Добавить тренировочный день");
-        System.out.println("2.9. Удалить тренировочный день");
+        System.out.println("1. Посмотреть список групп");
+        System.out.println("2. Посмотреть информацию о группе");
+        System.out.println("3. Создать новую группу");
+        System.out.println("4. Удалить группу");
+        System.out.println("5. Добавить ученика в группу");
+        System.out.println("6. Удалить ученика из группы");
+        System.out.println("7. Показать расписание группы");
+        System.out.println("8. Добавить тренировочный день");
+        System.out.println("9. Удалить тренировочный день");
 
         int groupAction = scanner.nextInt();
         processGroupAction(groupAction);
@@ -79,10 +79,10 @@ public class GymManager {
 
     private void processStudents() {
         System.out.println("Выберите действие:");
-        System.out.println("3.1. Просмотреть список учеников");
-        System.out.println("3.2. Просмотреть информацию об ученике");
-        System.out.println("3.3. Добавить нового ученика");
-        System.out.println("3.4. Удалить ученика");
+        System.out.println("1. Просмотреть список учеников");
+        System.out.println("2. Просмотреть информацию об ученике");
+        System.out.println("3. Добавить нового ученика");
+        System.out.println("4. Удалить ученика");
 
         int studentAction = scanner.nextInt();
         processStudentAction(studentAction);

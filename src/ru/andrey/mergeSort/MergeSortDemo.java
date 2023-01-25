@@ -54,14 +54,11 @@ public class MergeSortDemo {
                     counterForMergedArray++;
                     counterForRightHalf++;
                 }
-                else if (leftHalf[counterForLeftHalf] < rightHalf[counterForRightHalf]) {
+                else {
                     mergedArray[counterForMergedArray] = leftHalf[counterForLeftHalf];
                     counterForMergedArray++;
                     counterForLeftHalf++;
                 }
-//                else {
-//                    // ошибка
-//                }
             }
             else if (counterForLeftHalf > (leftHalf.length - 1) && counterForRightHalf <= (rightHalf.length - 1)) {
                 // если левый массив уже весь выбран, то вся оставшаяся часть правого массива уходит в мерджЭррэй
@@ -79,31 +76,23 @@ public class MergeSortDemo {
                     counterForMergedArray++;
                 }
             }
-//            else if (counterForRightHalf >= (rightHalf.length - 1) && counterForLeftHalf >= (leftHalf.length - 1)) {
-//                // ошибка
-//            }
-//            else if (counterForMergedArray > (mergedArray.length - 1)) {
-//                // ошибка
-//            }
         }
         for (int i = 0; i < array.length; i++) {
             array[i] = mergedArray[i];
         }
     }
 
-    public void change (int[] array) {
-        int a = array[0];
-        array[0] = array[2];
-        array[2] = a;
-    }
+//    public void change (int[] array) {
+//        int a = array[0];
+//        array[0] = array[2];
+//        array[2] = a;
+//    }
 
     // Метод для проверки массива на то, отсортирован он или нет
 //    public boolean checkIfSorted (int[] array) {
-//        boolean isSorted = false;
-//        for (int i: array) {
-//            if (array.length == 1) isSorted = true;
-//            if (array[i] <= array[i+1]) isSorted = true;
-//            else isSorted = false;
+//        boolean isSorted = true;
+//        for (int element: array) {
+//            if (array[i] > array[i+1]) isSorted = false;
 //        }
 //        return isSorted;
 //    }
