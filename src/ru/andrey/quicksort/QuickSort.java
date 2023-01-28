@@ -6,7 +6,6 @@ public class QuickSort {
     public static void main(String[] args) {
 
         // Create an array which shall be sorted
-//        int[] mainArray = {26, 63, 26, -44, 9, 75, -3};
         int[] mainArray = new int[20];
         for (int i = 0; i < mainArray.length; i++) {
             mainArray[i] = ThreadLocalRandom.current().nextInt(-100, 100);
@@ -103,28 +102,3 @@ public class QuickSort {
         }
     }
 }
-
-
-
-//        // Add all lesser integers into the supplementaryArray to the left of the frontier
-//        int counterOfThePosition = 0;
-//        for (int i = 0; i < array.length; i++) {
-//            if (array[i] < frontier) {
-//                supplementaryArray[counterOfThePosition] = array[i];
-//                counterOfThePosition++;
-//            }
-//        }
-//
-//        // Add frontier elements to the supplementaryArray to the right of lesser elements
-//        for (int i = 0; i < counterOfFrontierElements; i++) {
-//            supplementaryArray[counterOfThePosition + i] = frontier;
-//            counterOfThePosition++;
-//        }
-//
-//        // All greater integers go into the newArray to the right of the frontier
-//        for (int i = 0; i < array.length; i++) {
-//            if (array[i] > frontier) {
-//                supplementaryArray[counterOfThePosition] = array[i];
-//                counterOfThePosition++;
-//            }
-//        }
