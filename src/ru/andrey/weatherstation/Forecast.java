@@ -3,10 +3,10 @@ package ru.andrey.weatherstation;
 import java.time.LocalDate;
 
 public class Forecast {
-    Float temperature;
-    Float humidity;
-    Float windSpeed;
-    Boolean isPrecise;
+    private Float temperature;
+    private Float humidity;
+    private Float windSpeed;
+    private Boolean isPrecise;
 
     public Forecast(Float temperature, Float humidity, Float windSpeed, Boolean isPrecise) {
         this.temperature = temperature;

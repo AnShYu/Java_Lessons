@@ -3,6 +3,7 @@ package ru.andrey.weatherstation;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public abstract class Radar {
 
@@ -69,5 +70,16 @@ public abstract class Radar {
             return thereAreReadingsForAllDaysInCalculation;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Radar radar = (Radar) o;
+        return Objects.equals(uid, radar.uid);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(uid);
+    }
 }
