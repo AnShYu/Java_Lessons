@@ -62,7 +62,7 @@ public abstract class Radar {
             Boolean thereAreReadingsForAllDaysInCalculation = true;
             for (int i = 1; i <= numberOfDaysInCalculation; i++) {
                 if (mapOfTheRadarReadings.containsKey(date.minusDays(i)) == false) {
-                    thereAreReadingsForAllDaysInCalculation == false;
+                    thereAreReadingsForAllDaysInCalculation = false;
                     break;
                 }
             }
