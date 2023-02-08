@@ -10,15 +10,15 @@ public class WeatherStation {
         switch (type) {
             case "Temperature":
                 Radar temperatureRadar = new TemperatureRadar(uidPrefix, name, latitude, longitude);
-                mapOfRadars.put(temperatureRadar.uid, temperatureRadar);
+                mapOfRadars.put(temperatureRadar.getUid(), temperatureRadar);
                 break;
             case "WindSpeed":
                 Radar windRadar = new WindRadar(uidPrefix, name, latitude, longitude);
-                mapOfRadars.put(windRadar.uid, windRadar);
+                mapOfRadars.put(windRadar.getUid(), windRadar);
                 break;
             case "Humidity":
                 Radar humidityRadar = new HumidityRadar(uidPrefix, name, latitude, longitude);
-                mapOfRadars.put(humidityRadar.uid, humidityRadar);
+                mapOfRadars.put(humidityRadar.getUid(), humidityRadar);
                 break;
             default:
                 // throw WrongRadarTypeException
@@ -34,10 +34,10 @@ public class WeatherStation {
 
     public List<RadarReading> getAllReadingsOfTheRadar (String uid) {
         Radar requestedRadar = mapOfRadars.get(uid);
-        List<RadarReading> arrayOfTheRadarReadings = new ArrayList<>(requestedRadar.mapOfTheRadarReadings.values());
+        List<RadarReading> listOfTheRadarReadings = new ArrayList<>(requestedRadar.getMapOfTheRadarReadings().values());
 
-        Collections.sort(arrayOfTheRadarReadings);
-        return arrayOfTheRadarReadings;
+        Collections.sort(listOfTheRadarReadings);
+        return listOfTheRadarReadings;
         // throw RadarMalFunctionException
     }
 
@@ -48,24 +48,24 @@ public class WeatherStation {
         int numberOfTemperatureRadars = 0;
         int numberOfHumidityRadars = 0;
         int numberOfWindSpeedRadars = 0;
-        int numberOfTemperatureRadarsWithReadingsForAllDaysInCalculation = 0;
-        int numberOfHumidityRadarsWithReadingsForAllDaysInCalculation = 0;
-        int numberOfWindSpeedRadarsWithReadingsForAllDaysInCalculation = 0;
+        int numberOfTemperatureRadarsWithEnoughReadings = 0;
+        int numberOfHumidityRadarsWithEnoughReadings = 0;
+        int numberOfWindSpeedRadarsWithEnoughReadings = 0;
         for (String uid: mapOfRadars.keySet()) {
             if (mapOfRadars.get(uid).getType().equals("Temperature")) {
                 temperarture = temperarture + mapOfRadars.get(uid).getAverageReadingForPeriod(date);
                 numberOfTemperatureRadars++;
-                if (mapOfRadars.get(uid).thereAreReadingsForAllDaysInCalculation(date)) numberOfTemperatureRadarsWithReadingsForAllDaysInCalculation++;
+                if (mapOfRadars.get(uid).thereAreReadingsForAllDaysInCalculation(date)) numberOfTemperatureRadarsWithEnoughReadings++;
             }
             else if (mapOfRadars.get(uid).getType().equals("Humidity")) {
                 humidity = humidity + mapOfRadars.get(uid).getAverageReadingForPeriod(date);
                 numberOfHumidityRadars++;
-                if (mapOfRadars.get(uid).thereAreReadingsForAllDaysInCalculation(date)) numberOfHumidityRadarsWithReadingsForAllDaysInCalculation++;
+                if (mapOfRadars.get(uid).thereAreReadingsForAllDaysInCalculation(date)) numberOfHumidityRadarsWithEnoughReadings++;
             }
             else if (mapOfRadars.get(uid).getType().equals("WindSpeed")) {
                 windSpeed = windSpeed + mapOfRadars.get(uid).getAverageReadingForPeriod(date);
                 numberOfWindSpeedRadars++;
-                if (mapOfRadars.get(uid).thereAreReadingsForAllDaysInCalculation(date)) numberOfWindSpeedRadarsWithReadingsForAllDaysInCalculation++;
+                if (mapOfRadars.get(uid).thereAreReadingsForAllDaysInCalculation(date)) numberOfWindSpeedRadarsWithEnoughReadings++;
             }
         }
 
@@ -74,31 +74,31 @@ public class WeatherStation {
         Float averageWindSpeed = windSpeed / numberOfWindSpeedRadars;
 
         Boolean isPrecise = true;
-        if (numberOfTemperatureRadars == 1 || numberOfHumidityRadars == 1 || numberOfWindSpeedRadars == 1) isPrecise = false;
-        if (numberOfTemperatureRadarsWithReadingsForAllDaysInCalculation == 0) isPrecise = false;
-        if (numberOfHumidityRadarsWithReadingsForAllDaysInCalculation == 0) isPrecise = false;
-        if (numberOfWindSpeedRadarsWithReadingsForAllDaysInCalculation == 0) isPrecise = false;
+        if (numberOfTemperatureRadars <= 1 || numberOfHumidityRadars <= 1 || numberOfWindSpeedRadars <= 1) isPrecise = false;
+        if (numberOfTemperatureRadarsWithEnoughReadings == 0) isPrecise = false;
+        if (numberOfHumidityRadarsWithEnoughReadings == 0) isPrecise = false;
+        if (numberOfWindSpeedRadarsWithEnoughReadings == 0) isPrecise = false;
 
         Forecast forecast = new Forecast (averageTemperature, averageHumidity, averageWindSpeed, isPrecise);
         return forecast;
     }
 
     public void markRadarMalfunction (String uid) {
-        mapOfRadars.get(uid).isMalfunctioning();
+        mapOfRadars.get(uid).setAsMalfunctioning();
     }
 
     public void fixRadar (String uid) {
-        mapOfRadars.get(uid).isNotMalfunctioning();
+        mapOfRadars.get(uid).setAsNotMalfunctioning();
     }
 
-    public Map<String, Radar> getMapOfAllMalfunctioningRadars () {
-        Map<String, Radar> mapOfMalfunctioningRadars = new HashMap<>();
+    public List<Radar> getListOfAllMalfunctioningRadars () {
+        List<Radar> listOfMalfunctioningRadars = new ArrayList<>();
         for (String uid: mapOfRadars.keySet()) {
-            if (mapOfRadars.get(uid).isNormalFunctioning()) {
-                mapOfMalfunctioningRadars.put(uid, mapOfRadars.get(uid));
+            if (mapOfRadars.get(uid).isNormalFunctioning() == false) {
+                listOfMalfunctioningRadars.add(mapOfRadars.get(uid));
             }
         }
-        return  mapOfMalfunctioningRadars;
+        return  listOfMalfunctioningRadars;
     }
 
 }

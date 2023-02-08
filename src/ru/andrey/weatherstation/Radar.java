@@ -7,17 +7,19 @@ import java.util.Objects;
 
 public abstract class Radar {
 
-    String uid;
-    String name;
-    Float latitude;
-    Float longitude;
+    private String uid;
+    private String name;
+    private Float latitude;
+    private Float longitude;
     private String type;
-    private Boolean normalFunctioning; // могу ли сделать поля не прайват? или же для всех полей, к которым хочу обращаться из других файлов, нужно делать геттер?
-    Map<LocalDate, RadarReading> mapOfTheRadarReadings = new HashMap<>();
+
+    private static int daysInAccountForForecast = 5;
+    private Boolean normalFunctioning;
+    private Map<LocalDate, RadarReading> mapOfTheRadarReadings = new HashMap<>();
 
     public Radar(String prefix, String name, Float latitude, Float longitude, String type) {
         UidGenerator newUID = new UidGenerator(prefix);
-        this.uid = newUID.uid;
+        this.uid = newUID.getUid();
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -25,11 +27,11 @@ public abstract class Radar {
         this.normalFunctioning = true;
     }
 
-    public void isMalfunctioning () {
+    public void setAsMalfunctioning() {
         normalFunctioning = false;
     }
 
-    public void isNotMalfunctioning () {
+    public void setAsNotMalfunctioning() {
         normalFunctioning = true;
     }
 
@@ -41,33 +43,42 @@ public abstract class Radar {
         return normalFunctioning;
     }
 
-    public String getType() {
-        return type;
-    }
 
     public Float getAverageReadingForPeriod (LocalDate date) {
         if (normalFunctioning) {
-            int numberOfDaysInCalculation = 5;
             Float totalOfRadarReadings = 0.0f;
-            for (int i = 1; i <= numberOfDaysInCalculation; i++) {
-                totalOfRadarReadings = totalOfRadarReadings + mapOfTheRadarReadings.get(date.minusDays(i)).readingValue;
+            for (int i = 1; i <= daysInAccountForForecast; i++) {
+                if (mapOfTheRadarReadings.containsKey(date.minusDays(i))) {
+                    totalOfRadarReadings = totalOfRadarReadings + mapOfTheRadarReadings.get(date.minusDays(i)).getReadingValue();
+                }
             }
-            Float averageReading = totalOfRadarReadings / numberOfDaysInCalculation;
+            Float averageReading = totalOfRadarReadings / daysInAccountForForecast;
             return averageReading;
         }
         return 0.0f;
     }
 
     public Boolean thereAreReadingsForAllDaysInCalculation  (LocalDate date) {
-            int numberOfDaysInCalculation = 5;
             Boolean thereAreReadingsForAllDaysInCalculation = true;
-            for (int i = 1; i <= numberOfDaysInCalculation; i++) {
+            for (int i = 1; i <= daysInAccountForForecast; i++) {
                 if (mapOfTheRadarReadings.containsKey(date.minusDays(i)) == false) {
                     thereAreReadingsForAllDaysInCalculation = false;
                     break;
                 }
             }
             return thereAreReadingsForAllDaysInCalculation;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public Map<LocalDate, RadarReading> getMapOfTheRadarReadings() {
+        return mapOfTheRadarReadings;
     }
 
     @Override

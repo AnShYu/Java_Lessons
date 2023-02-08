@@ -4,14 +4,18 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class RadarReading implements Comparable<RadarReading> {
-    LocalDate date;
-    Float readingValue;
+    private LocalDate date;
+    private Float readingValue;
     String uid;
 
     public RadarReading(String uid, LocalDate date, Float readingValue) {
         this.uid = uid;
         this.date = date.now();
         this.readingValue = readingValue;
+    }
+
+    public Float getReadingValue() {
+        return readingValue;
     }
 
     @Override
