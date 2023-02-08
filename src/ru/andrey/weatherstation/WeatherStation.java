@@ -21,24 +21,24 @@ public class WeatherStation {
                 mapOfRadars.put(humidityRadar.getUid(), humidityRadar);
                 break;
             default:
-                // throw WrongRadarTypeException
+                throw new WrongRadarTypeException("There is no such type of Radars");
                 break;
         }
     }
 
     public void addRadarReading (String uid, LocalDate date, Float readingValue) {
+        if (mapOfRadars.get(uid).isNormalFunctioning() == false) throw new RadarMalfunctionException("Radar is malfunctioning");
         RadarReading radarReading = new RadarReading(uid, date, readingValue);
         mapOfRadars.get(uid).addRadarReading(date, radarReading);
-        // throw RadarMalFunctionException
     }
 
     public List<RadarReading> getAllReadingsOfTheRadar (String uid) {
+        if (mapOfRadars.get(uid).isNormalFunctioning() == false) throw new RadarMalfunctionException("Radar is malfunctioning");
         Radar requestedRadar = mapOfRadars.get(uid);
         List<RadarReading> listOfTheRadarReadings = new ArrayList<>(requestedRadar.getMapOfTheRadarReadings().values());
 
         Collections.sort(listOfTheRadarReadings);
         return listOfTheRadarReadings;
-        // throw RadarMalFunctionException
     }
 
     public Forecast getForecastOnCertainDate (LocalDate date) {
