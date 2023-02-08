@@ -6,7 +6,7 @@ import java.util.*;
 public class WeatherStation {
     private Map<String, Radar> mapOfRadars = new HashMap<>();
 
-    public void addRadar (String uidPrefix, String name, Float latitude, Float longitude, String type) {
+    public void addRadar (String uidPrefix, String name, Float latitude, Float longitude, String type) throws WrongRadarTypeException {
         switch (type) {
             case "Temperature":
                 Radar temperatureRadar = new TemperatureRadar(uidPrefix, name, latitude, longitude);
@@ -22,17 +22,16 @@ public class WeatherStation {
                 break;
             default:
                 throw new WrongRadarTypeException("There is no such type of Radars");
-                break;
         }
     }
 
-    public void addRadarReading (String uid, LocalDate date, Float readingValue) {
+    public void addRadarReading (String uid, LocalDate date, Float readingValue) throws  RadarMalfunctionException {
         if (mapOfRadars.get(uid).isNormalFunctioning() == false) throw new RadarMalfunctionException("Radar is malfunctioning");
         RadarReading radarReading = new RadarReading(uid, date, readingValue);
         mapOfRadars.get(uid).addRadarReading(date, radarReading);
     }
 
-    public List<RadarReading> getAllReadingsOfTheRadar (String uid) {
+    public List<RadarReading> getAllReadingsOfTheRadar (String uid) throws RadarMalfunctionException {
         if (mapOfRadars.get(uid).isNormalFunctioning() == false) throw new RadarMalfunctionException("Radar is malfunctioning");
         Radar requestedRadar = mapOfRadars.get(uid);
         List<RadarReading> listOfTheRadarReadings = new ArrayList<>(requestedRadar.getMapOfTheRadarReadings().values());

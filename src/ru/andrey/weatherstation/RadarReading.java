@@ -37,4 +37,9 @@ public class RadarReading implements Comparable<RadarReading> {
     public int hashCode() {
         return Objects.hash(readingValue, uid);
     }
+
+    @Override
+    public String toString() {
+        return "Radar Reading: " + "date: " + date + ", " + "reading: " + readingValue;
+    }
 }

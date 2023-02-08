@@ -15,4 +15,10 @@ public class Forecast {
         this.isPrecise = isPrecise;
     }
 
+    @Override
+    public String toString() {
+        String preciseness = "Forecasr is precise";
+        if (isPrecise == false) preciseness = "Forecasr is not precise";
+        return "Temperature: " + temperature + ", Humidity: " + humidity + ", WindSpeed: " + windSpeed + ". " + preciseness;
+    }
 }

@@ -93,4 +93,9 @@ public abstract class Radar {
     public int hashCode() {
         return Objects.hash(uid);
     }
+
+    @Override
+    public String toString() {
+        return "Radar: uid: " + uid + ", name: " + name + ", latitude: " + latitude + ", longitude: " + longitude + ", type: " + type;
+    }
 }
