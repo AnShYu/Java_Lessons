@@ -57,15 +57,15 @@ public class Main {
 
     public void processAddRadar() {
         System.out.println("Введите префикс радара");
-        String uidPrefix = scanner.nextLine();
+        String uidPrefix = scanner.next();
         System.out.println("Введите название радара");
-        String radarName = scanner.nextLine();
+        String radarName = scanner.next();
         System.out.println("Введите широту радара");
         Float latitude = scanner.nextFloat();
         System.out.println("Введите долготу радара");
         Float longitude = scanner.nextFloat();
         System.out.println("Введите тип радара");
-        String radarType = scanner.nextLine();
+        String radarType = scanner.next();
         try {
             weatherStation.addRadar(uidPrefix, radarName, latitude, longitude, radarType);
         } catch (WrongRadarTypeException e) {
@@ -75,9 +75,9 @@ public class Main {
 
     public void processAddRadarReading() {
         System.out.println("Введите uid радара");
-        String uid = scanner.nextLine();
+        String uid = scanner.next();
         System.out.println("Введите дату (формат: гггг-мм-дд)");
-        String dateInString = scanner.nextLine();
+        String dateInString = scanner.next();
         LocalDate date = LocalDate.parse(dateInString);
         System.out.println("Введите показание радара");
         Float radarReading = scanner.nextFloat();
@@ -90,7 +90,7 @@ public class Main {
 
     public void processGetAllReadingsOfTheRadar() {
         System.out.println("Введите uid радара");
-        String uid = scanner.nextLine();
+        String uid = scanner.next();
         List<RadarReading> listOfRadarReadings = new ArrayList<>();
         try {
             listOfRadarReadings = weatherStation.getAllReadingsOfTheRadar(uid);
@@ -104,25 +104,25 @@ public class Main {
 
     public void processGetForecast() {
         System.out.println("Введите дату (формат: гггг-мм-дд)");
-        String dateInString = scanner.nextLine();
+        String dateInString = scanner.next();
         LocalDate date = LocalDate.parse(dateInString);
         System.out.println(weatherStation.getForecastOnCertainDate(date));
     }
 
     public void processMarkMalfunction() {
         System.out.println("Введите uid радара");
-        String uid = scanner.nextLine();
+        String uid = scanner.next();
         weatherStation.markRadarMalfunction(uid);
     }
 
     public void processFixRadar() {
         System.out.println("Введите uid радара");
-        String uid = scanner.nextLine();
+        String uid = scanner.next();
         weatherStation.fixRadar(uid);
     }
 
     private void processGetAllMalfunctioningRadars() {
-        List<Radar> listOfMalfunctioningRadars = new ArrayList<>();
+        List<Radar> listOfMalfunctioningRadars = weatherStation.getListOfAllMalfunctioningRadars();
         for (Radar radar: listOfMalfunctioningRadars) {
             System.out.println(radar);
         }
