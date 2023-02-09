@@ -9,7 +9,7 @@ public class WeatherStation {
     public void addRadar (String uidPrefix, String name, Float latitude, Float longitude, String type) throws WrongRadarTypeException {
         switch (type) {
             case "Temperature":
-                Radar temperatureRadar = new TemperatureRadar(uidPrefix, name, latitude, longitude);
+                Radar temperatureRadar = new TemperatureRadar(uidPrefix, name, latitude, longitude); // как обращаться к методам наследника потом?
                 mapOfRadars.put(temperatureRadar.getUid(), temperatureRadar);
                 break;
             case "WindSpeed":

@@ -10,7 +10,7 @@ public class RadarReading implements Comparable<RadarReading> {
 
     public RadarReading(String uid, LocalDate date, Float readingValue) {
         this.uid = uid;
-        this.date = date.now();
+        this.date = date;
         this.readingValue = readingValue;
     }
 

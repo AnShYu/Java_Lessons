@@ -47,12 +47,14 @@ public abstract class Radar {
     public Float getAverageReadingForPeriod (LocalDate date) {
         if (normalFunctioning) {
             Float totalOfRadarReadings = 0.0f;
+            int daysWithReadings = 0;
             for (int i = 1; i <= daysInAccountForForecast; i++) {
                 if (mapOfTheRadarReadings.containsKey(date.minusDays(i))) {
                     totalOfRadarReadings = totalOfRadarReadings + mapOfTheRadarReadings.get(date.minusDays(i)).getReadingValue();
+                    daysWithReadings++;
                 }
             }
-            Float averageReading = totalOfRadarReadings / daysInAccountForForecast;
+            Float averageReading = totalOfRadarReadings / daysWithReadings;
             return averageReading;
         }
         return 0.0f;
