@@ -9,17 +9,16 @@ public abstract class Radar {
 
     private String uid;
     private String name;
-    private Float latitude;
-    private Float longitude;
+    private float latitude;
+    private float longitude;
     private String type;
 
-    private static int daysInAccountForForecast = 5;
-    private Boolean normalFunctioning;
+    private static final int DAYS_IN_ACCOUNT_FOR_FORECAST = 5;
+    private boolean normalFunctioning;
     private Map<LocalDate, RadarReading> mapOfTheRadarReadings = new HashMap<>();
 
-    public Radar(String prefix, String name, Float latitude, Float longitude, String type) {
-        UidGenerator newUID = new UidGenerator(prefix);
-        this.uid = newUID.getUid();
+    public Radar(String uid, String name, float latitude, float longitude, String type) {
+        this.uid = uid;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -45,10 +44,9 @@ public abstract class Radar {
 
 
     public Float getAverageReadingForPeriod (LocalDate date) {
-        if (normalFunctioning) {
             Float totalOfRadarReadings = 0.0f;
             int daysWithReadings = 0;
-            for (int i = 1; i <= daysInAccountForForecast; i++) {
+            for (int i = 1; i <= DAYS_IN_ACCOUNT_FOR_FORECAST; i++) {
                 if (mapOfTheRadarReadings.containsKey(date.minusDays(i))) {
                     totalOfRadarReadings = totalOfRadarReadings + mapOfTheRadarReadings.get(date.minusDays(i)).getReadingValue();
                     daysWithReadings++;
@@ -56,19 +54,15 @@ public abstract class Radar {
             }
             Float averageReading = totalOfRadarReadings / daysWithReadings;
             return averageReading;
-        }
-        return 0.0f;
     }
 
-    public Boolean thereAreReadingsForAllDaysInCalculation  (LocalDate date) {
-            Boolean thereAreReadingsForAllDaysInCalculation = true;
-            for (int i = 1; i <= daysInAccountForForecast; i++) {
-                if (mapOfTheRadarReadings.containsKey(date.minusDays(i)) == false) {
-                    thereAreReadingsForAllDaysInCalculation = false;
-                    break;
+    public Boolean hasReadingsForAllDaysInCalculation  (LocalDate date) {
+            for (int i = 1; i <= DAYS_IN_ACCOUNT_FOR_FORECAST; i++) {
+                if (!mapOfTheRadarReadings.containsKey(date.minusDays(i))) {
+                    return false;
                 }
             }
-            return thereAreReadingsForAllDaysInCalculation;
+            return true;
     }
 
     public String getType() {

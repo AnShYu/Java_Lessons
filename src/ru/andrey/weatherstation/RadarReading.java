@@ -5,16 +5,16 @@ import java.util.Objects;
 
 public class RadarReading implements Comparable<RadarReading> {
     private LocalDate date;
-    private Float readingValue;
+    private float readingValue;
     String uid;
 
-    public RadarReading(String uid, LocalDate date, Float readingValue) {
+    public RadarReading(String uid, LocalDate date, float readingValue) {
         this.uid = uid;
         this.date = date;
         this.readingValue = readingValue;
     }
 
-    public Float getReadingValue() {
+    public float getReadingValue() {
         return readingValue;
     }
 

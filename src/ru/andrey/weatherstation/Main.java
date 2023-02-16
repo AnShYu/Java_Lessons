@@ -69,7 +69,8 @@ public class Main {
         try {
             weatherStation.addRadar(uidPrefix, radarName, latitude, longitude, radarType);
         } catch (WrongRadarTypeException e) {
-            e.printStackTrace();
+            System.out.println("Произошла ошибка: " + e.getMessage());
+            processAddRadar();
         }
     }
 
@@ -85,6 +86,9 @@ public class Main {
             weatherStation.addRadarReading(uid, date, radarReading);
         } catch (RadarMalfunctionException e) {
             e.printStackTrace();
+        } catch (WrongRadarUIDException e) {
+            e.printStackTrace();
+            processAddRadarReading();
         }
     }
 
@@ -96,6 +100,9 @@ public class Main {
             listOfRadarReadings = weatherStation.getAllReadingsOfTheRadar(uid);
         } catch (RadarMalfunctionException e) {
             e.printStackTrace();
+        } catch (WrongRadarUIDException e) {
+            e.printStackTrace();
+            processGetAllReadingsOfTheRadar();
         }
         for (RadarReading reading: listOfRadarReadings) {
             System.out.println(reading);
@@ -112,13 +119,23 @@ public class Main {
     public void processMarkMalfunction() {
         System.out.println("Введите uid радара");
         String uid = scanner.next();
-        weatherStation.markRadarMalfunction(uid);
+        try {
+            weatherStation.markRadarMalfunction(uid);
+        } catch (WrongRadarUIDException e) {
+            e.printStackTrace();
+            processMarkMalfunction();
+        }
     }
 
     public void processFixRadar() {
         System.out.println("Введите uid радара");
         String uid = scanner.next();
-        weatherStation.fixRadar(uid);
+        try {
+            weatherStation.fixRadar(uid);
+        } catch (WrongRadarUIDException e) {
+            e.printStackTrace();
+            processFixRadar();
+        }
     }
 
     private void processGetAllMalfunctioningRadars() {

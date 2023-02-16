@@ -1,14 +1,12 @@
 package ru.andrey.weatherstation;
 
-import java.time.LocalDate;
-
 public class Forecast {
-    private Float temperature;
-    private Float humidity;
-    private Float windSpeed;
-    private Boolean isPrecise;
+    private float temperature;
+    private float humidity;
+    private float windSpeed;
+    private boolean isPrecise;
 
-    public Forecast(Float temperature, Float humidity, Float windSpeed, Boolean isPrecise) {
+    public Forecast(float temperature, float humidity, float windSpeed, boolean isPrecise) {
         this.temperature = temperature;
         this.humidity = humidity;
         this.windSpeed = windSpeed;
@@ -17,8 +15,8 @@ public class Forecast {
 
     @Override
     public String toString() {
-        String preciseness = "Forecasr is precise";
-        if (isPrecise == false) preciseness = "Forecasr is not precise";
+        String preciseness = "Forecast is precise";
+        if (!isPrecise) preciseness = "Forecast is not precise";
         return "Temperature: " + temperature + ", Humidity: " + humidity + ", WindSpeed: " + windSpeed + ". " + preciseness;
     }
 }
