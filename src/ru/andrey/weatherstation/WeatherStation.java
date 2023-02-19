@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class WeatherStation {
-//  Мапа мап здесь не нужна? если добавлять все радары одновременно и в спец мапу и в общую, то будет ли создаваться 2 радара?
+
     private Map<String, Radar> mapOfTemperatureRadars = new HashMap<>();
     private Map<String, Radar> mapOfWindSPeedRadars = new HashMap<>();
     private Map<String, Radar> mapOfHumidityRadars = new HashMap<>();
@@ -49,56 +49,18 @@ public class WeatherStation {
     }
 
     public Forecast getForecastOnCertainDate (LocalDate date) {
-        float temperature = 0.0f;
-        float humidity = 0.0f;
-        float windSpeed = 0.0f;
-        int numberOfTemperatureRadars = 0;
-        int numberOfHumidityRadars = 0;
-        int numberOfWindSpeedRadars = 0;
-        int numberOfTemperatureRadarsWithEnoughReadings = 0;
-        int numberOfHumidityRadarsWithEnoughReadings = 0;
-        int numberOfWindSpeedRadarsWithEnoughReadings = 0;
+        SpecificParameterForecast temperatureForecast = getSpecificParameterForecastOnCertainDate(mapOfTemperatureRadars, date);
+        SpecificParameterForecast humidityForecast = getSpecificParameterForecastOnCertainDate(mapOfHumidityRadars, date);
+        SpecificParameterForecast windSpeedForecast = getSpecificParameterForecastOnCertainDate(mapOfWindSPeedRadars, date);
 
-        for (String uid: mapOfTemperatureRadars.keySet()) { // как здесь обратиться сразу к значению?
-            Radar radar = mapOfTemperatureRadars.get(uid);
-            if (radar.isNormalFunctioning()) {
-                temperature = temperature + radar.getAverageReadingForPeriod(date);
-                numberOfTemperatureRadars++;
-                if (radar.hasReadingsForAllDaysInCalculation(date)) {
-                    numberOfTemperatureRadarsWithEnoughReadings++;
-                }
-            }
-        }
-        for (String uid: mapOfHumidityRadars.keySet()) {
-            Radar radar = mapOfHumidityRadars.get(uid);
-            if (radar.isNormalFunctioning()) {
-                humidity = humidity + radar.getAverageReadingForPeriod(date);
-                numberOfHumidityRadars++;
-                if (radar.hasReadingsForAllDaysInCalculation(date)) {
-                    numberOfHumidityRadarsWithEnoughReadings++;
-                }
-            }
-        }
-        for (String uid: mapOfWindSPeedRadars.keySet()) {
-            Radar radar = mapOfWindSPeedRadars.get(uid);
-            if (radar.isNormalFunctioning()) {
-                windSpeed = windSpeed + radar.getAverageReadingForPeriod(date);
-                numberOfWindSpeedRadars++;
-                if (radar.hasReadingsForAllDaysInCalculation(date)) {
-                    numberOfWindSpeedRadarsWithEnoughReadings++;
-                }
-            }
+        boolean isPrecise = false;
+        if(temperatureForecast.isPrecise() && humidityForecast.isPrecise() && windSpeedForecast.isPrecise()) {
+            isPrecise = true;
         }
 
-        float averageTemperature = temperature / numberOfTemperatureRadars;
-        float averageHumidity = humidity / numberOfHumidityRadars;
-        float averageWindSpeed = windSpeed / numberOfWindSpeedRadars;
-
-        boolean isPrecise = true;
-        if (numberOfTemperatureRadars <= 1 || numberOfHumidityRadars <= 1 || numberOfWindSpeedRadars <= 1) isPrecise = false;
-        if (numberOfTemperatureRadarsWithEnoughReadings == 0) isPrecise = false;
-        if (numberOfHumidityRadarsWithEnoughReadings == 0) isPrecise = false;
-        if (numberOfWindSpeedRadarsWithEnoughReadings == 0) isPrecise = false;
+        float averageTemperature = temperatureForecast.getParameterForecast();
+        float averageHumidity = humidityForecast.getParameterForecast();
+        float averageWindSpeed = windSpeedForecast.getParameterForecast();
 
         Forecast forecast = new Forecast (averageTemperature, averageHumidity, averageWindSpeed, isPrecise);
         return forecast;
@@ -145,9 +107,39 @@ public class WeatherStation {
         else if (mapOfWindSPeedRadars.containsKey(uid)) {
             radar = mapOfWindSPeedRadars.get(uid);
         }
-        else if (mapOfHumidityRadars.containsKey(uid)) radar = mapOfHumidityRadars.get(uid);
-        else throw new WrongRadarUIDException("There is no Radar with such UID");
+        else if (mapOfHumidityRadars.containsKey(uid)) {
+            radar = mapOfHumidityRadars.get(uid);
+        } else {
+            throw new WrongRadarUIDException("There is no Radar with such UID");
+        }
         return radar;
+    }
+
+    private SpecificParameterForecast getSpecificParameterForecastOnCertainDate (Map<String, Radar> map, LocalDate date) {
+        float parameterValue = 0.0f;
+        int numberOfParameterRadars = 0;
+        int numberOfParameterRadarsWithEnoughReadings = 0;
+        for (Radar radar : map.values()) {
+            if (radar.isNormalFunctioning()) {
+                parameterValue = parameterValue + radar.getAverageReadingForPeriod(date);
+                numberOfParameterRadars++;
+                if (radar.hasReadingsForAllDaysInCalculation(date)) {
+                    numberOfParameterRadarsWithEnoughReadings++;
+                }
+            }
+        }
+        float averageParameterValue = parameterValue / numberOfParameterRadars;
+
+        boolean isPrecise = true;
+        if (numberOfParameterRadars <= 1) {
+            isPrecise = false;
+        }
+        if (numberOfParameterRadarsWithEnoughReadings == 0) {
+            isPrecise = false;
+        }
+
+        SpecificParameterForecast specificForeCast = new SpecificParameterForecast(isPrecise, averageParameterValue);
+        return specificForeCast;
     }
 
 }
