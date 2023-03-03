@@ -13,6 +13,22 @@ public class Forecast {
         this.isPrecise = isPrecise;
     }
 
+    public float getTemperature() {
+        return temperature;
+    }
+
+    public float getHumidity() {
+        return humidity;
+    }
+
+    public float getWindSpeed() {
+        return windSpeed;
+    }
+
+    public boolean isPrecise() {
+        return isPrecise;
+    }
+
     @Override
     public String toString() {
         String preciseness = "Forecast is precise";

@@ -1,9 +1,13 @@
 package ru.andrey.weatherstation;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
-public class RadarReading implements Comparable<RadarReading> {
+public class RadarReading implements Comparable<RadarReading>, Serializable {
+
+    private static final long serialVersionUID = 1L;
     private LocalDate date;
     private float readingValue;
     String uid;
@@ -17,6 +21,15 @@ public class RadarReading implements Comparable<RadarReading> {
     public float getReadingValue() {
         return readingValue;
     }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
 
     @Override
     public int compareTo(RadarReading o) {

@@ -1,12 +1,14 @@
 package ru.andrey.weatherstation;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class Radar {
+public abstract class Radar implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private String uid;
     private String name;
     private float latitude;
@@ -16,6 +18,8 @@ public abstract class Radar {
     private static final int DAYS_IN_ACCOUNT_FOR_FORECAST = 5;
     private boolean normalFunctioning;
     private Map<LocalDate, RadarReading> mapOfTheRadarReadings = new HashMap<>();
+
+    
 
     public Radar(String uid, String name, float latitude, float longitude, String type) {
         this.uid = uid;
@@ -36,6 +40,11 @@ public abstract class Radar {
 
     public void addRadarReading (LocalDate date, RadarReading radarReading) {
         mapOfTheRadarReadings.put(date, radarReading);
+    }
+
+    public void addRadarReading (RadarReading reading) {
+        LocalDate date = reading.getDate();
+        mapOfTheRadarReadings.put(date, reading);
     }
 
     public boolean isNormalFunctioning () {
