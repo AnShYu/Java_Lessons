@@ -71,7 +71,7 @@ public class WeatherStation {
     }
 
     public void addRadarReading(List<RadarReading> list) {
-        for (RadarReading reading: list) {
+        for (RadarReading reading : list) {
             if (this.mapOfTemperatureRadars.containsKey(reading.getUid())) {
                 this.mapOfTemperatureRadars.get(reading.getUid()).addRadarReading(reading);
             } else if (this.mapOfHumidityRadars.containsKey(reading.getUid())) {
@@ -80,6 +80,7 @@ public class WeatherStation {
                 this.mapOfTemperatureRadars.get(reading.getUid()).addRadarReading(reading);
             }
         }
+
     }
 
     public List<RadarReading> getAllReadingsOfTheRadar (String uid) throws RadarMalfunctionException, WrongRadarUIDException {
@@ -213,7 +214,4 @@ public class WeatherStation {
         }
         return listOfRadars;
     }
-
-
-
 }

@@ -1,5 +1,6 @@
 package ru.andrey.weatherstation;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,14 +9,20 @@ import java.util.Scanner;
 public class Main {
     private Scanner scanner = new Scanner(System.in);
     private WeatherStation weatherStation = new WeatherStation();
+    private File radarsFile = new File ("Files_for_weatherstation/Radars.txt");
+    private File readingsFile = new File ("Files_for_weatherstation/RadarReadings");
 
     private boolean stopped = false;
 
     public static void main(String[] args) {
         Main main = new Main();
-        main.readAllSavedRadars("Files_for_weatherstation/Radars.txt");
-        main.readAllSavedRadarReadings("Files_for_weatherstation/RadarReadings");
-        while(main.stopped) main.showMainMenu();
+        if (main.radarsFile.exists()) {
+            main.readAllSavedRadars("Files_for_weatherstation/Radars.txt");
+        }
+        if (main.readingsFile.exists()) {
+            main.readAllSavedRadarReadings("Files_for_weatherstation/RadarReadings");
+        }
+        while(!main.stopped) main.showMainMenu();
     }
 
     private void showMainMenu() {
@@ -160,8 +167,10 @@ public class Main {
 
     private void readAllSavedRadars (String fileName) {
         List<Radar> listOfRadars = RadarsFileManager.readListOfRadarsFromFile(fileName);
-        for (Radar radar: listOfRadars) {
-            weatherStation.addRadar(radar);
+        if (listOfRadars != null) {
+            for (Radar radar: listOfRadars) {
+                weatherStation.addRadar(radar);
+            }
         }
     }
 

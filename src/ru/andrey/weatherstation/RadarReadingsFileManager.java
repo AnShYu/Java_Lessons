@@ -14,20 +14,20 @@ public class RadarReadingsFileManager {
     public static List<RadarReading> makeListOfRadarReadings(String fileName) {
         List<String> listOfCSVs = readRadarReadingsFromFile(fileName);
         List<RadarReading> listOfRadarReadings = new ArrayList<>();
-        for (String string: listOfCSVs) {
-            String[] parts = string.split("\\,");
+            for (String string : listOfCSVs) {
+                String[] parts = string.split("\\,");
 
-            String dateInString = parts[0].trim();
-            LocalDate date = LocalDate.parse(dateInString);
+                String dateInString = parts[0].trim();
+                LocalDate date = LocalDate.parse(dateInString);
 
-            String uid = parts[1].trim();
+                String uid = parts[1].trim();
 
-            float readingValue = Float.parseFloat(parts[3].trim());
+                float readingValue = Float.parseFloat(parts[3].trim());
 
-            RadarReading reading = new RadarReading(uid, date, readingValue);
-            listOfRadarReadings.add(reading);
-        }
-        return listOfRadarReadings;
+                RadarReading reading = new RadarReading(uid, date, readingValue);
+                listOfRadarReadings.add(reading);
+            }
+            return listOfRadarReadings;
 
 //            int commaIndex1 = string.indexOf(",");
 //            String dateInString = string.substring(0, commaIndex1).trim();
@@ -35,10 +35,8 @@ public class RadarReadingsFileManager {
 //
 //            String substring1 = string.substring(commaIndex1 + 1).trim();
 //            int commaIndex2 = substring1.indexOf(",")
-        }
-
-
     }
+
 
     private static List<String> readRadarReadingsFromFile (String fileName) {
         try (Reader reader = new FileReader(fileName);
