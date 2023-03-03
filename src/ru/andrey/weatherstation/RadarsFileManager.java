@@ -5,8 +5,8 @@ import java.util.List;
 
 public class RadarsFileManager {
 
-    public static void writeRadarsToTheFile (List<Radar> list, String fileName) {
-        try (FileOutputStream fos = new FileOutputStream(fileName, true);
+    public static void writeRadarsToTheFile (List<Radar> list, File file) {
+        try (FileOutputStream fos = new FileOutputStream(file, true);
              ObjectOutputStream ous = new ObjectOutputStream(fos)) {
                 ous.writeObject(list);
         } catch (IOException e) {
@@ -14,8 +14,8 @@ public class RadarsFileManager {
         }
     }
 
-    public static List<Radar> readListOfRadarsFromFile(String fileName) {
-        try (FileInputStream fis = new FileInputStream(fileName);
+    public static List<Radar> readListOfRadarsFromFile(File file) {
+        try (FileInputStream fis = new FileInputStream(file);
              ObjectInputStream ois = new ObjectInputStream(fis)) {
             List<Radar> listOfAllRadars = (List<Radar>) ois.readObject();
             return listOfAllRadars;

@@ -11,16 +11,17 @@ public class Main {
     private WeatherStation weatherStation = new WeatherStation();
     private File radarsFile = new File ("Files_for_weatherstation/Radars.txt");
     private File readingsFile = new File ("Files_for_weatherstation/RadarReadings");
+    private File forecastsFile = new File ("Files_for_weatherstation/Forecasts.txt");
 
     private boolean stopped = false;
 
     public static void main(String[] args) {
         Main main = new Main();
         if (main.radarsFile.exists()) {
-            main.readAllSavedRadars("Files_for_weatherstation/Radars.txt");
+            main.readAllSavedRadars(main.radarsFile);
         }
         if (main.readingsFile.exists()) {
-            main.readAllSavedRadarReadings("Files_for_weatherstation/RadarReadings");
+            main.readAllSavedRadarReadings(main.readingsFile);
         }
         while(!main.stopped) main.showMainMenu();
     }
@@ -65,7 +66,7 @@ public class Main {
                 processGetAllMalfunctioningRadars();
                 break;
             case 8:
-                processFinishTheProgram("Files_for_weatherstation/Radars.txt");
+                processFinishTheProgram(radarsFile);
                 break;
         }
     }
@@ -128,7 +129,7 @@ public class Main {
         System.out.println("Введите дату (формат: гггг-мм-дд)");
         String dateInString = scanner.next();
         LocalDate date = LocalDate.parse(dateInString);
-        System.out.println(weatherStation.getForecastOnCertainDate(date));
+        System.out.println(weatherStation.getForecastOnCertainDate(date, forecastsFile));
     }
 
     public void processMarkMalfunction() {
@@ -160,13 +161,13 @@ public class Main {
         }
     }
 
-    private void processFinishTheProgram(String fileName) {
-        RadarsFileManager.writeRadarsToTheFile(weatherStation.getListOfAllRadars(), fileName);
+    private void processFinishTheProgram(File file) {
+        RadarsFileManager.writeRadarsToTheFile(weatherStation.getListOfAllRadars(), file);
         stopped = true;
     }
 
-    private void readAllSavedRadars (String fileName) {
-        List<Radar> listOfRadars = RadarsFileManager.readListOfRadarsFromFile(fileName);
+    private void readAllSavedRadars (File file) {
+        List<Radar> listOfRadars = RadarsFileManager.readListOfRadarsFromFile(file);
         if (listOfRadars != null) {
             for (Radar radar: listOfRadars) {
                 weatherStation.addRadar(radar);
@@ -174,8 +175,8 @@ public class Main {
         }
     }
 
-    private void readAllSavedRadarReadings (String fileName) {
-        List<RadarReading> list = RadarReadingsFileManager.makeListOfRadarReadings(fileName);
+    private void readAllSavedRadarReadings (File file) {
+        List<RadarReading> list = RadarReadingsFileManager.makeListOfRadarReadings(file);
         weatherStation.addRadarReading(list);
     }
 }

@@ -1,9 +1,6 @@
 package ru.andrey.weatherstation;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +8,8 @@ import java.util.List;
 public class RadarReadingsFileManager {
 
     //дата, uid радара, тип параметра, значение параметра - презюмирую, что каждая запись начинается с новой строчки
-    public static List<RadarReading> makeListOfRadarReadings(String fileName) {
-        List<String> listOfCSVs = readRadarReadingsFromFile(fileName);
+    public static List<RadarReading> makeListOfRadarReadings(File file) {
+        List<String> listOfCSVs = readRadarReadingsFromFile(file);
         List<RadarReading> listOfRadarReadings = new ArrayList<>();
             for (String string : listOfCSVs) {
                 String[] parts = string.split("\\,");
@@ -38,8 +35,8 @@ public class RadarReadingsFileManager {
     }
 
 
-    private static List<String> readRadarReadingsFromFile (String fileName) {
-        try (Reader reader = new FileReader(fileName);
+    private static List<String> readRadarReadingsFromFile (File file) {
+        try (Reader reader = new FileReader(file);
         BufferedReader br = new BufferedReader(reader)) {
             List<String> listOfReadValues = new ArrayList<>();
             String readValue = br.readLine();

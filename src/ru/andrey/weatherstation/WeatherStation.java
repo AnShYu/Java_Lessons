@@ -1,5 +1,6 @@
 package ru.andrey.weatherstation;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -91,7 +92,7 @@ public class WeatherStation {
         return listOfTheRadarReadings;
     }
 
-    public Forecast getForecastOnCertainDate (LocalDate date) {
+    public Forecast getForecastOnCertainDate (LocalDate date, File file) {
         SpecificParameterForecast temperatureForecast = getSpecificParameterForecastOnCertainDate(mapOfTemperatureRadars, date);
         SpecificParameterForecast humidityForecast = getSpecificParameterForecastOnCertainDate(mapOfHumidityRadars, date);
         SpecificParameterForecast windSpeedForecast = getSpecificParameterForecastOnCertainDate(mapOfWindSPeedRadars, date);
@@ -107,7 +108,7 @@ public class WeatherStation {
 
         Forecast forecast = new Forecast (averageTemperature, averageHumidity, averageWindSpeed, isPrecise);
 
-        try (Writer writer  = new FileWriter("Files_for_weatherstation/Forecasts.txt", true)) {
+        try (Writer writer  = new FileWriter(file, true)) {
             writer.write("Date: " + date + "\n");
             writer.write("Temperature: " + forecast.getTemperature() + "\n");
             writer.write("Humidity: " + forecast.getHumidity() + "\n");
