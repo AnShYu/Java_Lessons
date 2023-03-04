@@ -1,0 +1,5 @@
+Date: 2023-03-02
+Temperature: 100.0
+Humidity: 100.0
+Wind Speed: 100.0
+The forecast is not precise
