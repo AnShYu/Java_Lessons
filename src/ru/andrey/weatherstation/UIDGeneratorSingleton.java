@@ -1,7 +1,10 @@
 package ru.andrey.weatherstation;
 
+import java.util.List;
+
 public class UIDGeneratorSingleton {
     private static UIDGeneratorSingleton INSTANCE;
+    private int counter = 1;
     private UIDGeneratorSingleton() {
     }
     public static UIDGeneratorSingleton getInstance() {
@@ -11,7 +14,6 @@ public class UIDGeneratorSingleton {
         return INSTANCE;
     }
 
-    private int counter = 1;
     public String generateUid(String prefix) {
         String uid  = prefix + "_" + counter;
         counter++;
@@ -21,4 +23,5 @@ public class UIDGeneratorSingleton {
     public void increaseUIDCounter () {
         counter++;
     }
+
 }

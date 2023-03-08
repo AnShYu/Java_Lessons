@@ -19,9 +19,11 @@ public class Main {
         Main main = new Main();
         if (main.radarsFile.exists()) {
             main.readAllSavedRadars(main.radarsFile);
+            System.out.println("Для информации: сохраненные радары прочитаны");
         }
         if (main.readingsFile.exists()) {
             main.readAllSavedRadarReadings(main.readingsFile);
+            System.out.println("Для информации: сохраненные показания радаров прочитаны");
         }
         while(!main.stopped) main.showMainMenu();
     }
@@ -85,6 +87,7 @@ public class Main {
         try {
             weatherStation.addRadar(uidPrefix, radarName, latitude, longitude, radarType);
         } catch (WrongRadarTypeException e) {
+            e.printStackTrace();
             System.out.println("Произошла ошибка: " + e.getMessage());
             processAddRadar();
         }
@@ -102,8 +105,11 @@ public class Main {
             weatherStation.addRadarReading(uid, date, radarReading);
         } catch (RadarMalfunctionException e) {
             e.printStackTrace();
+            System.out.println("Произошла ошибка: " + e.getMessage()); // Получается немного неудобно - ошибка всплывает только после того, как я уже вбил все показания. Нельзя ли сделать, чтобы это сразу сообщалось?
+            showMainMenu();
         } catch (WrongRadarUIDException e) {
             e.printStackTrace();
+            System.out.println("Произошла ошибка: " + e.getMessage());
             processAddRadarReading();
         }
     }
@@ -116,8 +122,11 @@ public class Main {
             listOfRadarReadings = weatherStation.getAllReadingsOfTheRadar(uid);
         } catch (RadarMalfunctionException e) {
             e.printStackTrace();
+            System.out.println("Произошла ошибка: " + e.getMessage());
+            showMainMenu();
         } catch (WrongRadarUIDException e) {
             e.printStackTrace();
+            System.out.println("Произошла ошибка: " + e.getMessage());
             processGetAllReadingsOfTheRadar();
         }
         for (RadarReading reading: listOfRadarReadings) {
@@ -129,7 +138,9 @@ public class Main {
         System.out.println("Введите дату (формат: гггг-мм-дд)");
         String dateInString = scanner.next();
         LocalDate date = LocalDate.parse(dateInString);
-        System.out.println(weatherStation.getForecastOnCertainDate(date, forecastsFile));
+        Forecast forecast = weatherStation.getForecastOnCertainDate(date);
+        ForecastsFileUtil.writeForecastToFile(forecast, forecastsFile);
+        System.out.println(forecast);
     }
 
     public void processMarkMalfunction() {
@@ -139,6 +150,7 @@ public class Main {
             weatherStation.markRadarMalfunction(uid);
         } catch (WrongRadarUIDException e) {
             e.printStackTrace();
+            System.out.println("Произошла ошибка: " + e.getMessage());
             processMarkMalfunction();
         }
     }
@@ -150,6 +162,7 @@ public class Main {
             weatherStation.fixRadar(uid);
         } catch (WrongRadarUIDException e) {
             e.printStackTrace();
+            System.out.println("Произошла ошибка: " + e.getMessage());
             processFixRadar();
         }
     }
@@ -162,21 +175,19 @@ public class Main {
     }
 
     private void processFinishTheProgram(File file) {
-        RadarsFileManager.writeRadarsToTheFile(weatherStation.getListOfAllRadars(), file);
+        RadarsFileUtil.writeRadarsToTheFile(weatherStation.getListOfAllRadars(), file);
         stopped = true;
     }
 
     private void readAllSavedRadars (File file) {
-        List<Radar> listOfRadars = RadarsFileManager.readListOfRadarsFromFile(file);
-        if (listOfRadars != null) {
-            for (Radar radar: listOfRadars) {
+        List<Radar> listOfRadars = RadarsFileUtil.readListOfRadarsFromFile(file);
+        for (Radar radar: listOfRadars) {
                 weatherStation.addRadar(radar);
-            }
         }
     }
 
     private void readAllSavedRadarReadings (File file) {
-        List<RadarReading> list = RadarReadingsFileManager.makeListOfRadarReadings(file);
+        List<RadarReading> list = RadarReadingsFileUtil.makeListOfRadarReadings(file);
         weatherStation.addRadarReading(list);
     }
 }

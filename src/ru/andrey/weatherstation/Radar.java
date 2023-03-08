@@ -2,20 +2,20 @@ package ru.andrey.weatherstation;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
-public abstract class Radar implements Serializable {
+public abstract class Radar implements Serializable { // почему его делать как enum? ----------------------------------------
 
     private static final long serialVersionUID = 1L;
+    private static final int DAYS_IN_ACCOUNT_FOR_FORECAST = 5;
+
     private String uid;
     private String name;
     private float latitude;
     private float longitude;
     private String type;
 
-    private static final int DAYS_IN_ACCOUNT_FOR_FORECAST = 5;
+
     private boolean normalFunctioning;
     private Map<LocalDate, RadarReading> mapOfTheRadarReadings = new HashMap<>();
 
@@ -52,8 +52,8 @@ public abstract class Radar implements Serializable {
     }
 
 
-    public Float getAverageReadingForPeriod (LocalDate date) {
-            Float totalOfRadarReadings = 0.0f;
+    public float getAverageReadingForPeriod (LocalDate date) {
+            float totalOfRadarReadings = 0.0f;
             int daysWithReadings = 0;
             for (int i = 1; i <= DAYS_IN_ACCOUNT_FOR_FORECAST; i++) {
                 if (mapOfTheRadarReadings.containsKey(date.minusDays(i))) {
@@ -61,7 +61,7 @@ public abstract class Radar implements Serializable {
                     daysWithReadings++;
                 }
             }
-            Float averageReading = totalOfRadarReadings / daysWithReadings;
+            float averageReading = totalOfRadarReadings / daysWithReadings;
             return averageReading;
     }
 
@@ -82,8 +82,9 @@ public abstract class Radar implements Serializable {
         return uid;
     }
 
-    public Map<LocalDate, RadarReading> getMapOfTheRadarReadings() {
-        return mapOfTheRadarReadings;
+    public List<RadarReading> getAllReadingsOfTheRadar() {
+        List<RadarReading> listOfTheRadarReadings = new ArrayList<>(this.mapOfTheRadarReadings.values());
+        return listOfTheRadarReadings;
     }
 
     @Override
@@ -103,4 +104,5 @@ public abstract class Radar implements Serializable {
     public String toString() {
         return "Radar: uid: " + uid + ", name: " + name + ", latitude: " + latitude + ", longitude: " + longitude + ", type: " + type;
     }
+
 }

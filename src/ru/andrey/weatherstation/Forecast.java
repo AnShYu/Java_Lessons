@@ -1,18 +1,25 @@
 package ru.andrey.weatherstation;
 
+import java.time.LocalDate;
+
 public class Forecast {
+    private LocalDate date;
     private float temperature;
     private float humidity;
     private float windSpeed;
     private boolean isPrecise;
 
-    public Forecast(float temperature, float humidity, float windSpeed, boolean isPrecise) {
+    public Forecast(LocalDate date, float temperature, float humidity, float windSpeed, boolean isPrecise) {
+        this.date = date;
         this.temperature = temperature;
         this.humidity = humidity;
         this.windSpeed = windSpeed;
         this.isPrecise = isPrecise;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
     public float getTemperature() {
         return temperature;
     }

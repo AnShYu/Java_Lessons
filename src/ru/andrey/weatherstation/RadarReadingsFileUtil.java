@@ -3,16 +3,17 @@ package ru.andrey.weatherstation;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class RadarReadingsFileManager {
+public class RadarReadingsFileUtil {
 
     //дата, uid радара, тип параметра, значение параметра - презюмирую, что каждая запись начинается с новой строчки
     public static List<RadarReading> makeListOfRadarReadings(File file) {
-        List<String> listOfCSVs = readRadarReadingsFromFile(file);
+        List<String> listOfCSVformatedRadarReadings = readRadarReadingsFromFile(file);
         List<RadarReading> listOfRadarReadings = new ArrayList<>();
-            for (String string : listOfCSVs) {
-                String[] parts = string.split("\\,");
+            for (String string : listOfCSVformatedRadarReadings) {
+                String[] parts = string.split(",");
 
                 String dateInString = parts[0].trim();
                 LocalDate date = LocalDate.parse(dateInString);
@@ -25,17 +26,10 @@ public class RadarReadingsFileManager {
                 listOfRadarReadings.add(reading);
             }
             return listOfRadarReadings;
-
-//            int commaIndex1 = string.indexOf(",");
-//            String dateInString = string.substring(0, commaIndex1).trim();
-//            LocalDate date = LocalDate.parse(dateInString);
-//
-//            String substring1 = string.substring(commaIndex1 + 1).trim();
-//            int commaIndex2 = substring1.indexOf(",")
     }
 
 
-    private static List<String> readRadarReadingsFromFile (File file) {
+    private static List<String> readRadarReadingsFromFile(File file) {
         try (Reader reader = new FileReader(file);
         BufferedReader br = new BufferedReader(reader)) {
             List<String> listOfReadValues = new ArrayList<>();
@@ -44,9 +38,10 @@ public class RadarReadingsFileManager {
                 listOfReadValues.add(readValue);
                 readValue = br.readLine();
             }
+            return listOfReadValues;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return Collections.emptyList();
     }
 }

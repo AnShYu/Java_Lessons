@@ -10,7 +10,7 @@ public class RadarReading implements Comparable<RadarReading>, Serializable {
     private static final long serialVersionUID = 1L;
     private LocalDate date;
     private float readingValue;
-    String uid;
+    private String uid;
 
     public RadarReading(String uid, LocalDate date, float readingValue) {
         this.uid = uid;

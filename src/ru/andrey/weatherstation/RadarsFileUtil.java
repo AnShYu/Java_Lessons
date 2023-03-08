@@ -1,9 +1,10 @@
 package ru.andrey.weatherstation;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.List;
 
-public class RadarsFileManager {
+public class RadarsFileUtil {
 
     public static void writeRadarsToTheFile (List<Radar> list, File file) {
         try (FileOutputStream fos = new FileOutputStream(file, true);
@@ -24,6 +25,6 @@ public class RadarsFileManager {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return null;
+        return Collections.emptyList();
     }
 }
