@@ -17,6 +17,22 @@ public class Forecast {
         this.isPrecise = isPrecise;
     }
 
+    public Forecast(LocalDate date, SpecificParameterForecast temperatureForecast, SpecificParameterForecast humidityForecast, SpecificParameterForecast windSpeedForecast) {
+        boolean isPrecise = false;
+        if(temperatureForecast.isPrecise() && humidityForecast.isPrecise() && windSpeedForecast.isPrecise()) {
+            isPrecise = true;
+        }
+        float temperature = temperatureForecast.getParameterForecast();
+        float humidity = humidityForecast.getParameterForecast();
+        float windSpeed = windSpeedForecast.getParameterForecast();
+
+        this.date = date;
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.windSpeed = windSpeed;
+        this.isPrecise = isPrecise;
+    }
+
     public LocalDate getDate() {
         return date;
     }

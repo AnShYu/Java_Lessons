@@ -14,7 +14,6 @@ public class RadarReadingsFileUtil {
         List<RadarReading> listOfRadarReadings = new ArrayList<>();
             for (String string : listOfCSVformatedRadarReadings) {
                 String[] parts = string.split(",");
-
                 String dateInString = parts[0].trim();
                 LocalDate date = LocalDate.parse(dateInString);
 

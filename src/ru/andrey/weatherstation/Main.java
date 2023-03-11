@@ -105,7 +105,7 @@ public class Main {
             weatherStation.addRadarReading(uid, date, radarReading);
         } catch (RadarMalfunctionException e) {
             e.printStackTrace();
-            System.out.println("Произошла ошибка: " + e.getMessage()); // Получается немного неудобно - ошибка всплывает только после того, как я уже вбил все показания. Нельзя ли сделать, чтобы это сразу сообщалось?
+            System.out.println("Произошла ошибка: " + e.getMessage());
             showMainMenu();
         } catch (WrongRadarUIDException e) {
             e.printStackTrace();

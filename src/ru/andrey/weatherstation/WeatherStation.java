@@ -9,11 +9,11 @@ import java.util.*;
 
 public class WeatherStation {
 
-    private Map<String, Radar> mapOfTemperatureRadars = new HashMap<>();
-    private Map<String, Radar> mapOfWindSPeedRadars = new HashMap<>();
-    private Map<String, Radar> mapOfHumidityRadars = new HashMap<>();
+    private final Map<String, Radar> mapOfTemperatureRadars = new HashMap<>();
+    private final Map<String, Radar> mapOfWindSPeedRadars = new HashMap<>();
+    private final Map<String, Radar> mapOfHumidityRadars = new HashMap<>();
 
-    private List<Map<String, Radar>> listOfRadarMaps = new ArrayList<>(); // Хороший ли это подход? Создавать дополнительные сущности, чтобы немного сократить код дальше
+    private List<Map<String, Radar>> listOfRadarMaps = new ArrayList<>();
     private UIDGeneratorSingleton uidGenerator;
     public WeatherStation() {
         this.uidGenerator = UIDGeneratorSingleton.getInstance();
@@ -24,34 +24,49 @@ public class WeatherStation {
 
     public void addRadar(String uidPrefix, String name, float latitude, float longitude, String type) throws WrongRadarTypeException {
         String uid = uidGenerator.generateUid(uidPrefix);
-        switch (type) {
-            case "Temperature":
-                Radar temperatureRadar = new TemperatureRadar(uid, name, latitude, longitude);
-                mapOfTemperatureRadars.put(temperatureRadar.getUid(), temperatureRadar);
+        RadarType radarType;
+        switch (type) { // Правильный ли это подход? Или можно как-то передавать аргументом не String, а сразу enum ----------------------------------------------------------------------
+            case "Temperatur":
+                radarType = RadarType.TEMPERATURE;
                 break;
             case "WindSpeed":
-                Radar windRadar = new WindRadar(uid, name, latitude, longitude);
-                mapOfWindSPeedRadars.put(windRadar.getUid(), windRadar);
+                radarType = RadarType.WINDSPEED;
                 break;
             case "Humidity":
-                Radar humidityRadar = new HumidityRadar(uid, name, latitude, longitude);
-                mapOfHumidityRadars.put(humidityRadar.getUid(), humidityRadar);
+                radarType = RadarType.HUMIDITY;
                 break;
             default:
                 throw new WrongRadarTypeException("There is no such type of Radars");
         }
+        switch (radarType) {
+            case TEMPERATURE:
+                Radar temperatureRadar = new TemperatureRadar(uid, name, latitude, longitude);
+                mapOfTemperatureRadars.put(temperatureRadar.getUid(), temperatureRadar);
+                break;
+            case WINDSPEED:
+                Radar windRadar = new WindRadar(uid, name, latitude, longitude);
+                mapOfWindSPeedRadars.put(windRadar.getUid(), windRadar);
+                break;
+            case HUMIDITY:
+                Radar humidityRadar = new HumidityRadar(uid, name, latitude, longitude);
+                mapOfHumidityRadars.put(humidityRadar.getUid(), humidityRadar);
+                break;
+        }
     }
 
     public void addRadar(Radar radar) {
-        uidGenerator.increaseUIDCounter();
+        String uid = radar.getUid();
+        String[] parts = uid.split("_");
+        int numericPart = Integer.parseInt(parts[1].trim());
+        uidGenerator.updateUIDCounter(numericPart);
         switch (radar.getType()) {
-            case "Temperature":
+            case TEMPERATURE:
                 mapOfTemperatureRadars.put(radar.getUid(), radar);
                 break;
-            case "WindSpeed":
+            case WINDSPEED:
                 mapOfWindSPeedRadars.put(radar.getUid(), radar);
                 break;
-            case "Humidity":
+            case HUMIDITY:
                 mapOfHumidityRadars.put(radar.getUid(), radar);
                 break;
         }
@@ -87,16 +102,7 @@ public class WeatherStation {
         SpecificParameterForecast humidityForecast = getSpecificParameterForecastOnCertainDate(mapOfHumidityRadars, date);
         SpecificParameterForecast windSpeedForecast = getSpecificParameterForecastOnCertainDate(mapOfWindSPeedRadars, date);
 
-        boolean isPrecise = false;
-        if(temperatureForecast.isPrecise() && humidityForecast.isPrecise() && windSpeedForecast.isPrecise()) {
-            isPrecise = true;
-        }
-
-        float averageTemperature = temperatureForecast.getParameterForecast();
-        float averageHumidity = humidityForecast.getParameterForecast();
-        float averageWindSpeed = windSpeedForecast.getParameterForecast();
-
-        Forecast forecast = new Forecast (date, averageTemperature, averageHumidity, averageWindSpeed, isPrecise);
+        Forecast forecast = new Forecast (date, temperatureForecast, humidityForecast, windSpeedForecast);
         return forecast;
     }
 
@@ -124,11 +130,9 @@ public class WeatherStation {
             if (map.containsKey(uid)) {
                 radar = mapOfTemperatureRadars.get(uid);
                 return radar;
-            } else {
-                throw new WrongRadarUIDException("There is no Radar with such UID");
             }
         }
-        return null; // нормально ли здесь возвращать null? -----------------------------------------------------------------------
+        throw new WrongRadarUIDException("There is no Radar with such UID");
     }
 
     private SpecificParameterForecast getSpecificParameterForecastOnCertainDate (Map<String, Radar> map, LocalDate date) {

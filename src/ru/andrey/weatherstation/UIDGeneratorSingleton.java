@@ -20,8 +20,10 @@ public class UIDGeneratorSingleton {
         return uid;
     }
 
-    public void increaseUIDCounter () {
-        counter++;
+    public void updateUIDCounter (int providedCounter) {
+        if (providedCounter > counter) {
+            counter = providedCounter;
+        }
     }
 
 }

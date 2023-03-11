@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-public class RadarReading implements Comparable<RadarReading>, Serializable {
+public class RadarReading implements Comparable<RadarReading> {
 
     private static final long serialVersionUID = 1L;
     private LocalDate date;

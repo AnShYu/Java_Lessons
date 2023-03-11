@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
-public abstract class Radar implements Serializable { // почему его делать как enum? ----------------------------------------
+public abstract class Radar implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private static final int DAYS_IN_ACCOUNT_FOR_FORECAST = 5;
@@ -13,15 +13,15 @@ public abstract class Radar implements Serializable { // почему его д�
     private String name;
     private float latitude;
     private float longitude;
-    private String type;
+    private RadarType type;
 
 
     private boolean normalFunctioning;
-    private Map<LocalDate, RadarReading> mapOfTheRadarReadings = new HashMap<>();
+    private transient Map<LocalDate, RadarReading> mapOfTheRadarReadings = new HashMap<>();
 
     
 
-    public Radar(String uid, String name, float latitude, float longitude, String type) {
+    public Radar(String uid, String name, float latitude, float longitude, RadarType type) {
         this.uid = uid;
         this.name = name;
         this.latitude = latitude;
@@ -74,7 +74,7 @@ public abstract class Radar implements Serializable { // почему его д�
             return true;
     }
 
-    public String getType() {
+    public RadarType getType() {
         return type;
     }
 
