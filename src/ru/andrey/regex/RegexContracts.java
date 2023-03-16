@@ -113,6 +113,7 @@ public class RegexContracts {
                     list.add(line);
                     line = scanner.nextLine();
                 }
+                list.add(line);
                 return list;
             } catch (IOException e) {
                 e.printStackTrace();
