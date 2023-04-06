@@ -21,9 +21,9 @@ public class RegexContracts {
 
         // Map for keeping number of contracts with firms. Key is firm name, value is number of contracts
         Map<String, Integer> map = new HashMap<>();
-
+        Pattern pattern = Pattern.compile(regex);
         for (String line: list) {
-            Pattern pattern = Pattern.compile(regex);
+
             Matcher matcher = pattern.matcher(line);
 
             if (matcher.find()) {
