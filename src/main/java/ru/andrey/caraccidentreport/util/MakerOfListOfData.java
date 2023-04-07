@@ -27,8 +27,8 @@ public class MakerOfListOfData {
         stringsForWritingtoFile.add("\n");
         stringsForWritingtoFile.add("ФИО: " + secondDriver.getName() + "\n");
         stringsForWritingtoFile.add("Номер паспорта: " + secondDriver.getPassportNo() + "\n");
-        stringsForWritingtoFile.add("Марка и модель авто: " + secondDriver.getCarPlateNumber() + "\n");
-        stringsForWritingtoFile.add("Номер авто: " + secondDriver.getCarBrandAndModel() + "\n");
+        stringsForWritingtoFile.add("Марка и модель авто: " + secondDriver.getCarBrandAndModel() + "\n");
+        stringsForWritingtoFile.add("Номер авто: " + secondDriver.getCarPlateNumber() + "\n");
         stringsForWritingtoFile.add("Номер полиса ОСАГО: " + secondDriver.getOSAGONumber() + "\n");
         stringsForWritingtoFile.add("\n");
         stringsForWritingtoFile.add("Обстоятельства ДТП:" + "\n");

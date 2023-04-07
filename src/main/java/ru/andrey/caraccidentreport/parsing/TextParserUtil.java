@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 public class TextParserUtil {
 
     public static List<String> parseText (String text, Pattern pattern) {
-        Matcher matcher = pattern.matcher(text);
         List<String> parsedPartOfText = parseText(text, pattern, "all_text");
         return parsedPartOfText;
     }

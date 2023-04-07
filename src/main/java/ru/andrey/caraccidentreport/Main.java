@@ -13,8 +13,11 @@ import java.util.List;
 import java.util.Map;
 
 public class Main {
-    //Пререквизиты: в пояснении к ДТП встречаются только данные двух участников ДТП, данных никаких других лиц нет
-    // Формат даты - указать.
+    //Пререквизиты:
+    // 1. В пояснении к ДТП встречаются только данные двух участников ДТП, данных никаких других лиц нет
+    // 2. Данные участников ДТП идут всегда последовательно - сначала данные составителя отчета, потом данные второго участника ДТП
+    // 3. Формат даты: дд.мм.гггг или дд.мм.гг
+    // 4. Формат адреса: город, улица, дом
     public static void main(String[] args) {
         File initialReport = new File("Files_for_Car_Accident_Report/Initial_Report.txt");
         File accidentParsedData = new File("Files_for_Car_Accident_Report/Parsed_Data_From_Report.txt");

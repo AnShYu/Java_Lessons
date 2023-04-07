@@ -1,5 +1,7 @@
 package ru.andrey.caraccidentreport.accidentcircumstances;
 
+import java.util.Objects;
+
 public class Driver {
     private String name;
     private String passportNo;
@@ -43,5 +45,18 @@ public class Driver {
 
     public String getOSAGONumber() {
         return oSAGONumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Driver driver = (Driver) o;
+        return Objects.equals(name, driver.name) && Objects.equals(passportNo, driver.passportNo) && Objects.equals(carBrandAndModel, driver.carBrandAndModel) && Objects.equals(carPlateNumber, driver.carPlateNumber) && Objects.equals(oSAGONumber, driver.oSAGONumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, passportNo, carBrandAndModel, carPlateNumber, oSAGONumber);
     }
 }

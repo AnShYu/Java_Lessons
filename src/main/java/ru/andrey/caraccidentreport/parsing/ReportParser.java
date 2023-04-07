@@ -35,7 +35,11 @@ public class ReportParser {
         circumstances.setAccidentAddress(TextParserUtil.parseText(text, patternsKeeper.getPattern(PatternsKeeper.ADDRESS)).get(0));
         circumstances.setAccidentDate(TextParserUtil.parseText(text, patternsKeeper.getPattern(PatternsKeeper.DATE)).get(0));
         circumstances.setAccidentTime(TextParserUtil.parseText(text, patternsKeeper.getPattern(PatternsKeeper.TIME)).get(0));
-        circumstances.setGuiltOfTheReportingDriver(TextParserUtil.parseText(text, patternsKeeper.getPattern(PatternsKeeper.GUILT)).get(0));
+        String guilt = TextParserUtil.parseText(text, patternsKeeper.getPattern(PatternsKeeper.GUILT)).get(0);
+        if (!guilt.contains("не признаю")) {
+            guilt = "признаю";
+        }
+        circumstances.setGuiltOfTheReportingDriver(guilt);
 
         Accident accident = new Accident(reportingDriver, secondDriver, circumstances);
         return accident;
