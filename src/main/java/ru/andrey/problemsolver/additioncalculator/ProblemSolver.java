@@ -6,19 +6,21 @@ public class ProblemSolver extends Thread {
 
     private static volatile Deque<Problem> problemsToSolve;
     private static volatile Deque<Integer> intermediateResults;
-    private static int numberOfProblems;
+    private static volatile int numberOfProblems;
     private static volatile int counter = 0;
-    private final Object lock = new Object();
+    private static Object synchronizer;
 
     @Override
     public void run() {
         while (counter<numberOfProblems) {
-            synchronized (lock) {
+            synchronized (synchronizer) {
                 if (!problemsToSolve.isEmpty()) {
                     Problem problem = problemsToSolve.pop();
                     int result = problem.getX() + problem.getY();
+//                    System.out.println(Thread.currentThread().getName() + " нашел промежуточный результат: " + result);
                     intermediateResults.add(result);
                     counter++;
+//                    System.out.println(Thread.currentThread().getName() + " Сколько промежуточных результатов нужно найти " + numberOfProblems + " Какой сейчас каунтер: " + counter);
                 }
             }
         }
@@ -34,5 +36,9 @@ public class ProblemSolver extends Thread {
 
     public static void setNumberOfProblems(int numberOfProblems) {
         ProblemSolver.numberOfProblems = numberOfProblems;
+    }
+
+    public static void setSynchronizer(Object synchronizer) {
+        ProblemSolver.synchronizer = synchronizer;
     }
 }

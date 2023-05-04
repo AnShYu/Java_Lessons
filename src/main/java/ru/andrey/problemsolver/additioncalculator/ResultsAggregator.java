@@ -6,19 +6,20 @@ public class ResultsAggregator extends Thread {
 
     private static volatile Deque<Integer> intermediateResults;
     private static int TotalResult = 0;
-    private static int numberOfIntermediateResults;
+    private static volatile int numberOfIntermediateResults;
     private static volatile int counter = 0;
-    private final Object lock = new Object();
+    private static Object synchronizer;
 
     @Override
     public void run() {
         while(counter<numberOfIntermediateResults) {
-            synchronized (lock) {
+            synchronized (synchronizer) {
                 if(!intermediateResults.isEmpty()) {
                     int intermediateResult = intermediateResults.pop();
                     TotalResult = TotalResult + intermediateResult;
-                    System.out.println(TotalResult);
+                    System.out.println(Thread.currentThread().getName() + " посчитал сумму промежуточных результатов " + TotalResult);
                     counter++;
+                    System.out.println(Thread.currentThread().getName() + " Сколько результатов нужно сложить " + numberOfIntermediateResults + " Какой сейчас каунтер: " + counter);
                 }
             }
         }
@@ -30,5 +31,9 @@ public class ResultsAggregator extends Thread {
 
     public static void setNumberOfIntermediateResults(int numberOfIntermediateResults) {
         ResultsAggregator.numberOfIntermediateResults = numberOfIntermediateResults;
+    }
+
+    public static void setSynchronizer(Object synchronizer) {
+        ResultsAggregator.synchronizer = synchronizer;
     }
 }

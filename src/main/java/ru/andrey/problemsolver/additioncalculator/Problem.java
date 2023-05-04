@@ -16,4 +16,12 @@ public class Problem {
     public int getY() {
         return y;
     }
+
+    @Override
+    public String toString() {
+        return "Problem{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }
