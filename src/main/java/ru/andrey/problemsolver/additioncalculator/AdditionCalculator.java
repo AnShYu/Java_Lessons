@@ -2,10 +2,11 @@ package ru.andrey.problemsolver.additioncalculator;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.List;
 import java.util.Scanner;
 
 public class AdditionCalculator {
-
+    // Как уйти от статик полей через создание специального класса?
     private static volatile Deque<Problem> problems = new ArrayDeque<>();
     private static volatile Deque<Integer> intermediateResults = new ArrayDeque<>();
     private static int numberOfProblems;
@@ -35,11 +36,13 @@ public class AdditionCalculator {
         ResultsAggregator.setNumberOfIntermediateResults(numberOfProblems);
         ResultsAggregator.setSynchronizer(lock);
 
-        ThreadFactory factory = new ThreadFactory();
-        factory.createInstances(ThreadType.PROBLEMMAKER, numberOfThreads);
-        factory.createInstances(ThreadType.PROBLEMSOLVER, numberOfThreads);
-        factory.createInstances(ThreadType.RESULTSAGGREGATOR, numberOfThreads);
-        ThreadLauncher.launchAllThreads(factory);
+        ThreadCreator creator = new ThreadCreator();
+        List<ProblemMaker> problemMakers = creator.createProblemMakers(numberOfThreads);
+        List<ProblemSolver> problemSolvers = creator.createProblemSolvers(numberOfThreads);
+        List<ResultsAggregator> resultsAggregators = creator.createResultsAggregators(numberOfThreads);
+        ThreadLauncher.launchThreads(problemMakers);
+        ThreadLauncher.launchThreads(problemSolvers);
+        ThreadLauncher.launchThreads(resultsAggregators);
     }
 
 }

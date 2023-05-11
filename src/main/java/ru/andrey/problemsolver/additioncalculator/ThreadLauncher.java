@@ -1,31 +1,19 @@
 package ru.andrey.problemsolver.additioncalculator;
 
+import java.util.List;
+
 public class ThreadLauncher {
 
-    public static void launch (ThreadFactory factory, ThreadType type) {
-        switch (type) {
-            case PROBLEMMAKER:
-                for (ProblemMaker problemMaker : factory.getProblemMakers()) {
-                    problemMaker.start();
-                }
-                break;
-            case PROBLEMSOLVER:
-                for (ProblemSolver problemSolver : factory.getProblemSolvers()) {
-                    problemSolver.start();
-                }
-                break;
-            case RESULTSAGGREGATOR:
-                for (ResultsAggregator resultsAggregator : factory.getResultsAggregators()) {
-                    resultsAggregator.start();
-                }
-                break;
+    public static <T extends Thread> void launchThreads (List<T> threads) {
+        for (T thread: threads) {
+            thread.start();
         }
     }
 
-    public static void launchAllThreads (ThreadFactory factory) {
-        ThreadLauncher.launch(factory, ThreadType.PROBLEMMAKER);
-        ThreadLauncher.launch(factory, ThreadType.PROBLEMSOLVER);
-        ThreadLauncher.launch(factory, ThreadType.RESULTSAGGREGATOR);
-    }
+//    public static <T extends Thread> void launchAllThreads (List<T>... threads) {
+//        for (int i = 0; i < threads.length; i++) {
+//            launchThreads(threads[i]);
+//        }
+//    }
 
 }

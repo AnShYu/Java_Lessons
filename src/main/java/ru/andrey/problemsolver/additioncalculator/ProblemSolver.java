@@ -12,14 +12,20 @@ public class ProblemSolver extends Thread {
 
     @Override
     public void run() {
-        while (counter<numberOfProblems) {
+        while (counter<numberOfProblems) {  // Здесь каунтер не отсечет нужное количесвто. Он нужен для остановки программы. Передача нужного количества задач обеспечивается через проверку на null. При использовании БО не понял, как ограничить количество вызовов.
+            Problem problem = null;
             synchronized (synchronizer) {
                 if (!problemsToSolve.isEmpty()) {
-                    Problem problem = problemsToSolve.pop();
-                    int result = problem.getX() + problem.getY();
-//                    System.out.println(Thread.currentThread().getName() + " нашел промежуточный результат: " + result);
-                    intermediateResults.add(result);
+                    problem = problemsToSolve.remove();
                     counter++;
+                }
+            }
+            if (problem != null) {
+                int result = problem.getX() + problem.getY();
+
+                synchronized (synchronizer) {
+                    intermediateResults.add(result);
+//                    System.out.println(Thread.currentThread().getName() + " нашел и передал промежуточный результат: " + result);
 //                    System.out.println(Thread.currentThread().getName() + " Сколько промежуточных результатов нужно найти " + numberOfProblems + " Какой сейчас каунтер: " + counter);
                 }
             }
