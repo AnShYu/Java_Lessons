@@ -127,7 +127,7 @@ public class TimeTable {
                 int result = leftMaximum + rightMaximum + 1;
                 intermediateResults.put(interval, result);
             }
-
+//            В строчках 131-136 ищу максимальное значение в мапе
             Map.Entry<Interval, Integer> maximumEntry = null;
             for (Map.Entry<Interval, Integer> entry: intermediateResults.entrySet()) {
                 if (maximumEntry == null || entry.getValue() > maximumEntry.getValue()) {
