@@ -98,8 +98,7 @@ public class TimeTable {
 
         if (intermediateResults.containsKey(interval)) {
             return intermediateResults.get(interval);
-        }
-        if (countNumberOfInternalActivities(allActivities, beforeFirst, afterLast) == 0) {
+        } else if (countNumberOfInternalActivities(allActivities, beforeFirst, afterLast) == 0) {
             return 0;
         } else if (countNumberOfInternalActivities(allActivities, beforeFirst, afterLast) == 1) {
             return 1;
