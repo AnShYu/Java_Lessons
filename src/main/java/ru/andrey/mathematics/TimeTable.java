@@ -1,8 +1,6 @@
 package ru.andrey.mathematics;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class TimeTable {
 
@@ -40,7 +38,7 @@ public class TimeTable {
         System.out.println(result);
     }
 
-    public static class Activity {
+    public static class Activity implements Comparable<Activity> {
         int startingTime;
         int endingTime;
 
@@ -58,21 +56,54 @@ public class TimeTable {
         }
 
         public boolean isBetween (Activity first, Activity last) {
-            if (this.getStartingTime() > first.getEndingTime() && this.endingTime < last.startingTime) {
+            if (this.getStartingTime() > first.getEndingTime() && this.getEndingTime() < last.getStartingTime()) {
                 return true;
             }
             return false;
         }
+
+        @Override
+        public int compareTo(Activity o) {
+            return this.endingTime - o.endingTime;
+        }
+    }
+
+    public static class Interval {
+        Activity beforeFirst;
+        Activity afterLast;
+
+        public Interval(Activity beforeFirst, Activity afterLast) {
+            this.beforeFirst = beforeFirst;
+            this.afterLast = afterLast;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Interval interval = (Interval) o;
+            return Objects.equals(beforeFirst, interval.beforeFirst) && Objects.equals(afterLast, interval.afterLast);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(beforeFirst, afterLast);
+        }
     }
 
     public static int countMaximumActivities (List<Activity> allActivities, Activity beforeFirst, Activity afterLast) {
+        Collections.sort(allActivities);
+        Map<Interval, Integer> intermediateResults = new HashMap<>();
+        Interval interval = new Interval(beforeFirst, afterLast);
+
+        if (intermediateResults.containsKey(interval)) {
+            return intermediateResults.get(interval);
+        }
         if (countNumberOfInternalActivities(allActivities, beforeFirst, afterLast) == 0) {
             return 0;
         } else if (countNumberOfInternalActivities(allActivities, beforeFirst, afterLast) == 1) {
             return 1;
         } else {
-
-            List<Integer> results = new ArrayList<>();
 
             for (int k = 0; k<allActivities.size(); k++) {
 
@@ -82,6 +113,7 @@ public class TimeTable {
                         leftActivities.add(allActivities.get(i));
                     }
                 }
+
 
                 List<Activity> rightActivities = new ArrayList<>();
                 for (int i = k; i<allActivities.size(); i++) {
@@ -94,9 +126,16 @@ public class TimeTable {
                 int leftMaximum = countMaximumActivities(leftActivities, beforeFirst, allActivities.get(k));
                 int rightMaximum = countMaximumActivities(rightActivities, allActivities.get(k), afterLast);
                 int result = leftMaximum + rightMaximum + 1;
-                results.add(result);
+                intermediateResults.put(interval, result);
             }
-            int maximumActivities = Collections.max(results);
+
+            Map.Entry<Interval, Integer> maximumEntry = null;
+            for (Map.Entry<Interval, Integer> entry: intermediateResults.entrySet()) {
+                if (maximumEntry == null || entry.getValue() > maximumEntry.getValue()) {
+                    maximumEntry = entry;
+                }
+            }
+            int maximumActivities = maximumEntry.getValue();
             return maximumActivities;
         }
     }
