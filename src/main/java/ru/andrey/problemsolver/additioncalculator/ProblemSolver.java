@@ -1,50 +1,38 @@
 package ru.andrey.problemsolver.additioncalculator;
 
 import java.util.Deque;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProblemSolver extends Thread {
 
-    private static volatile Deque<Problem> problemsToSolve;
-    private static volatile Deque<Integer> intermediateResults;
+    private static volatile ArrayBlockingQueue<Problem> problemsToSolve;
+    private static volatile ArrayBlockingQueue<Integer> intermediateResults;
     private static volatile int numberOfProblems;
-    private static volatile int counter = 0;
-    private static Object synchronizer;
+    private static volatile AtomicInteger counter = new AtomicInteger();
 
     @Override
     public void run() {
-        while (counter<numberOfProblems) {  // Здесь каунтер не отсечет нужное количесвто. Он нужен для остановки программы. Передача нужного количества задач обеспечивается через проверку на null. При использовании БО не понял, как ограничить количество вызовов.
-            Problem problem = null;
-            synchronized (synchronizer) {
-                if (!problemsToSolve.isEmpty()) {
-                    problem = problemsToSolve.remove();
-                    counter++;
-                }
-            }
-            if (problem != null) {
+        while (counter.incrementAndGet()<numberOfProblems + 1) {
+            try {
+                Problem problem = problemsToSolve.take();
                 int result = problem.getX() + problem.getY();
-
-                synchronized (synchronizer) {
-                    intermediateResults.add(result);
-//                    System.out.println(Thread.currentThread().getName() + " нашел и передал промежуточный результат: " + result);
-//                    System.out.println(Thread.currentThread().getName() + " Сколько промежуточных результатов нужно найти " + numberOfProblems + " Какой сейчас каунтер: " + counter);
-                }
+                intermediateResults.put(result);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
 
-    public static void setProblemsToSolve(Deque<Problem> problemsToSolve) {
+    public static void setProblemsToSolve(ArrayBlockingQueue<Problem> problemsToSolve) {
         ProblemSolver.problemsToSolve = problemsToSolve;
     }
 
-    public static void setIntermediateResults(Deque<Integer> intermediateResults) {
+    public static void setIntermediateResults(ArrayBlockingQueue<Integer> intermediateResults) {
         ProblemSolver.intermediateResults = intermediateResults;
     }
 
     public static void setNumberOfProblems(int numberOfProblems) {
         ProblemSolver.numberOfProblems = numberOfProblems;
-    }
-
-    public static void setSynchronizer(Object synchronizer) {
-        ProblemSolver.synchronizer = synchronizer;
     }
 }

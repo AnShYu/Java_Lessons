@@ -10,10 +10,4 @@ public class ThreadLauncher {
         }
     }
 
-//    public static <T extends Thread> void launchAllThreads (List<T>... threads) {
-//        for (int i = 0; i < threads.length; i++) {
-//            launchThreads(threads[i]);
-//        }
-//    }
-
 }

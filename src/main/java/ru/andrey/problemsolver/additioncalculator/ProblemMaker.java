@@ -1,17 +1,15 @@
 package ru.andrey.problemsolver.additioncalculator;
 
-
-import java.util.Deque;
 import java.util.Random;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProblemMaker extends Thread {
 
     private static volatile int numberOfProblems;
     private static long pause;
-    private static volatile Deque<Problem> madeProblems;
+    private static volatile ArrayBlockingQueue<Problem> madeProblems;
     private static volatile AtomicInteger counter = new AtomicInteger();
-    private static Object synchronizer;
 
     @Override
     public void run() {
@@ -20,12 +18,10 @@ public class ProblemMaker extends Thread {
             int x = rand.nextInt(100);
             int y = rand.nextInt(100);
             Problem problem = new Problem(x, y);
-            synchronized (synchronizer) {
-                madeProblems.add(problem);
-//                System.out.println(Thread.currentThread().getName() + " создал и передал проблему: " + problem);
-            }
             try {
-                Thread.sleep(pause); // Зачем нужен sleep?
+                madeProblems.put(problem);
+//                System.out.println(Thread.currentThread().getName() + " Создал и положил проблему: " + problem);
+                Thread.sleep(pause);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -41,11 +37,8 @@ public class ProblemMaker extends Thread {
        ProblemMaker.pause = pause;
     }
 
-    public static void setMadeProblems(Deque<Problem> madeProblems) {
+    public static void setMadeProblems(ArrayBlockingQueue<Problem> madeProblems) {
         ProblemMaker.madeProblems = madeProblems;
     }
 
-    public static void setSynchronizer(Object synchronizer) {
-        ProblemMaker.synchronizer = synchronizer;
-    }
 }

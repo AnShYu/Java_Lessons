@@ -4,37 +4,34 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CountDownLatch;
 
 public class AdditionCalculator {
     // Как уйти от статик полей через создание специального класса?
-    private static volatile Deque<Problem> problems = new ArrayDeque<>();
-    private static volatile Deque<Integer> intermediateResults = new ArrayDeque<>();
-    private static int numberOfProblems;
-    private static Object lock = new Object();
 
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите количество задач:");
-        numberOfProblems = scanner.nextInt();
+        int numberOfProblems = scanner.nextInt();
         System.out.println("Введите интервал между созданием задач (сек.):");
         long pause = scanner.nextLong()*1000l;
         System.out.println("Введите количество потоков каждого типа:");
         int numberOfThreads = scanner.nextInt();
 
+        ArrayBlockingQueue<Problem> problems = new ArrayBlockingQueue<>(numberOfProblems);
+        ArrayBlockingQueue<Integer> intermediateResults = new ArrayBlockingQueue<>(numberOfProblems);
+
         ProblemMaker.setNumberOfProblems(numberOfProblems);
         ProblemMaker.setPause(pause);
         ProblemMaker.setMadeProblems(problems);
-        ProblemMaker.setSynchronizer(lock);
 
         ProblemSolver.setProblemsToSolve(problems);
         ProblemSolver.setIntermediateResults(intermediateResults);
         ProblemSolver.setNumberOfProblems(numberOfProblems);
-        ProblemSolver.setSynchronizer(lock);
 
         ResultsAggregator.setIntermediateResults(intermediateResults);
         ResultsAggregator.setNumberOfIntermediateResults(numberOfProblems);
-        ResultsAggregator.setSynchronizer(lock);
 
         ThreadCreator creator = new ThreadCreator();
         List<ProblemMaker> problemMakers = creator.createProblemMakers(numberOfThreads);
@@ -43,6 +40,11 @@ public class AdditionCalculator {
         ThreadLauncher.launchThreads(problemMakers);
         ThreadLauncher.launchThreads(problemSolvers);
         ThreadLauncher.launchThreads(resultsAggregators);
+
+        CountDownLatch allFinishLatch = new CountDownLatch(numberOfProblems);
+        ResultsAggregator.setAllFinishLatch(allFinishLatch);
+        allFinishLatch.await();
+        System.out.println("Итоговый результат: " + ResultsAggregator.getTotalResult());
     }
 
 }

@@ -1,35 +1,34 @@
 package ru.andrey.problemsolver.additioncalculator;
 
 import java.util.Deque;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ResultsAggregator extends Thread {
 
-    private static Deque<Integer> intermediateResults;
+    private static ArrayBlockingQueue<Integer> intermediateResults;
     private static AtomicInteger totalResult = new AtomicInteger();
     private static int numberOfIntermediateResults;
-    private static volatile int counter = 0;
-    private static Object synchronizer;
+    private static volatile AtomicInteger counter = new AtomicInteger();
+
+    private static CountDownLatch allFinishLatch;
 
     @Override
     public void run() {
-        while(counter<numberOfIntermediateResults) {
-            int intermediateResult = 0;
-            synchronized (synchronizer) {
-                if (!intermediateResults.isEmpty()) {
-                    intermediateResult = intermediateResults.remove();
-                    counter++;
-//                    System.out.println(Thread.currentThread().getName() + " Сколько результатов нужно сложить " + numberOfIntermediateResults + " Какой сейчас каунтер: " + counter);
-                }
-            }
-            if (intermediateResult != 0) {
-                totalResult.addAndGet(intermediateResult); // и будет ли здесь корректно?
-                System.out.println(Thread.currentThread().getName() + " посчитал сумму промежуточных результатов " + totalResult.get()); // как вывести только финальный результат
+        while(counter.incrementAndGet()<numberOfIntermediateResults + 1) {
+            try {
+                int intermediateResult = intermediateResults.take();
+                totalResult.addAndGet(intermediateResult);
+                allFinishLatch.countDown();
+//                System.out.println(Thread.currentThread().getName() + " посчитал сумму промежуточных результатов " + totalResult.get());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
 
-    public static void setIntermediateResults(Deque<Integer> intermediateResults) {
+    public static void setIntermediateResults(ArrayBlockingQueue<Integer> intermediateResults) {
         ResultsAggregator.intermediateResults = intermediateResults;
     }
 
@@ -37,7 +36,11 @@ public class ResultsAggregator extends Thread {
         ResultsAggregator.numberOfIntermediateResults = numberOfIntermediateResults;
     }
 
-    public static void setSynchronizer(Object synchronizer) {
-        ResultsAggregator.synchronizer = synchronizer;
+    public static void setAllFinishLatch(CountDownLatch allFinishLatch) {
+        ResultsAggregator.allFinishLatch = allFinishLatch;
+    }
+
+    public static AtomicInteger getTotalResult() {
+        return totalResult;
     }
 }
